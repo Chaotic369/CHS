@@ -398,19 +398,26 @@
         }
 
         function handleSquareClick(sqId) {
-            if (game.game_over()) return;
-            if (currentMode !== 'offline' && game.turn() !== myColor) return;
+                    if (game.game_over()) return;
+                    if (currentMode !== 'offline' && game.turn() !== myColor) return;
 
-            if (selectedSquare) {
-                const moveAttempt = game.move({ from: selectedSquare, to: sqId, promotion: 'q' });
-                if (moveAttempt) {
-                    if (currentMode !== 'offline') set(ref(db, 'games/' + roomId + '/fen'), game.fen());
-                    selectedSquare = null;
-                    possibleMoves = [];
-                    renderBoard();
-                    return;
-                }
-            }
+                    if (selectedSquare) {
+                        const moveAttempt = game.move({ from: selectedSquare, to: sqId, promotion: 'q' });
+                        if (moveAttempt) {
+                            if (currentMode !== 'offline') set(ref(db, 'games/' + roomId + '/fen'), game.fen());
+                    
+                            // Play local move sound
+                            if (game.game_over()) sounds.end.play().catch(()=>{});
+                            else if (game.in_check()) sounds.check.play().catch(()=>{});
+                            else if (moveAttempt.captured) sounds.capture.play().catch(()=>{});
+                            else sounds.move.play().catch(()=>{});
+
+                            selectedSquare = null;
+                            possibleMoves = [];
+                            renderBoard();
+                            return;
+                        }
+                    }
 
             const piece = game.get(sqId);
             if (piece && piece.color === game.turn()) {
