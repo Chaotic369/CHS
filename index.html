@@ -641,28 +641,45 @@
                     }
 
                     // --- Mobile Game Style UI Click Sound ---
-                    const playBtnSound = () => {
-                        try {
-                            const AudioContext = window.AudioContext || window.webkitAudioContext;
-                            if (!AudioContext) return;
-                            const ctx = new AudioContext();
-                            const osc = ctx.createOscillator();
-                            const gain = ctx.createGain();
-                            osc.connect(gain);
-                            gain.connect(ctx.destination);
+                            let uiAudioCtx;
+                            const playBtnSound = () => {
+                                try {
+                                    if (!uiAudioCtx) {
+                                        const AudioContext = window.AudioContext || window.webkitAudioContext;
+                                        if (!AudioContext) return;
+                                        uiAudioCtx = new AudioContext();
+                                    }
+                                    const ctx = uiAudioCtx;
+                                    if (ctx.state === 'suspended') ctx.resume();
                 
-                            // Snappy mechanical tick (like BGMI/Free Fire UI)
-                            osc.type = 'square';
-                            osc.frequency.setValueAtTime(800, ctx.currentTime);
-                            osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.05);
+                                    // Swish/swoosh sound using filtered white noise
+                                    const bufferSize = ctx.sampleRate * 0.25;
+                                    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                                    const data = buffer.getChannelData(0);
+                                    for (let i = 0; i < bufferSize; i++) {
+                                        data[i] = Math.random() * 2 - 1;
+                                    }
                 
-                            gain.gain.setValueAtTime(0.15, ctx.currentTime);
-                            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+                                    const noise = ctx.createBufferSource();
+                                    noise.buffer = buffer;
                 
-                            osc.start();
-                            osc.stop(ctx.currentTime + 0.05);
-                        } catch (e) {}
-                    };
+                                    const filter = ctx.createBiquadFilter();
+                                    filter.type = 'bandpass';
+                                    filter.frequency.setValueAtTime(400, ctx.currentTime);
+                                    filter.frequency.exponentialRampToValueAtTime(3500, ctx.currentTime + 0.2);
+                
+                                    const gain = ctx.createGain();
+                                    gain.gain.setValueAtTime(0, ctx.currentTime);
+                                    gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05);
+                                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+                
+                                    noise.connect(filter);
+                                    filter.connect(gain);
+                                    gain.connect(ctx.destination);
+                
+                                    noise.start();
+                                } catch (e) {}
+                            };
 
                     document.addEventListener('click', (e) => {
                         if (e.target.closest('.btn')) {
