@@ -377,22 +377,27 @@
                         });
 
         // --- Game Sync ---
-                function setupGameSync() {
-                    onValue(ref(db, 'games/' + roomId + '/fen'), (snapshot) => {
-                        const serverFen = snapshot.val();
-                        if (serverFen && serverFen !== game.fen()) {
-                            game.load(serverFen);
+                        function setupGameSync() {
+                            onValue(ref(db, 'games/' + roomId + '/fen'), (snapshot) => {
+                                const serverFen = snapshot.val();
+                                if (serverFen && serverFen !== game.fen()) {
+                                    const isRematch = serverFen === 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+                                    if (isRematch) myColor = myColor === 'w' ? 'b' : 'w';
+                            
+                                    game.load(serverFen);
                     
-                            // Play opponent sound
-                            if (game.game_over()) sounds.end.play().catch(()=>{});
-                            else if (game.in_check()) sounds.check.play().catch(()=>{});
-                            else sounds.move.play().catch(()=>{});
+                                    // Play opponent sound only if it's not a rematch board reset
+                                    if (!isRematch) {
+                                        if (game.game_over()) sounds.end.play().catch(()=>{});
+                                        else if (game.in_check()) sounds.check.play().catch(()=>{});
+                                        else sounds.move.play().catch(()=>{});
+                                    }
 
-                            selectedSquare = null;
-                            possibleMoves = [];
-                            renderBoard();
-                        }
-                    });
+                                    selectedSquare = null;
+                                    possibleMoves = [];
+                                    renderBoard();
+                                }
+                            });
 
             onValue(ref(db, 'games/' + roomId + '/players'), (snapshot) => {
                 const p = snapshot.val() || {};
