@@ -69,21 +69,27 @@
             h2 { margin: 0 0 10px 0; text-align: center; font-size: 18px; color: var(--text-main); }
 
             .btn {
-                background: rgba(255, 255, 255, 0.1);
-                color: white;
-                border: none;
-                padding: 10px 16px;
-                border-radius: 30px;
-                font-size: 13px;
-                font-weight: bold;
-                cursor: pointer;
-                width: 100%;
-                text-transform: uppercase;
-                transition: transform 0.2s ease;
-            }
-            .btn-primary { background: var(--accent); color: white; }
-            .btn-danger { background: transparent; color: var(--danger); }
-            .btn:active { transform: scale(0.98); }
+                        background: transparent;
+                        color: white;
+                        border: 2px solid rgba(255, 255, 255, 0.2);
+                        padding: 0;
+                        border-radius: 50%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        cursor: pointer;
+                        width: 55px;
+                        height: 55px;
+                        transition: transform 0.2s ease, background 0.2s ease;
+                    }
+                    .btn svg {
+                        width: 24px;
+                        height: 24px;
+                        stroke-width: 2;
+                    }
+                    .btn-primary { color: var(--accent); border-color: var(--accent); }
+                    .btn-danger { color: var(--danger); border-color: var(--danger); }
+                    .btn:active { transform: scale(0.92); background: rgba(255, 255, 255, 0.1); }
 
             input {
                 width: 100%;
@@ -146,12 +152,37 @@
 </head>
 <body>
 
+    <!-- Background King/Crown Logo -->
+    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1; pointer-events: none; opacity: 0.04; color: var(--text-main);">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width: 75vmin; height: 75vmin;">
+            <path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.2a1 1 0 0 1-.964.731H5.817a1 1 0 0 1-.964-.731L2.019 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"></path>
+            <path d="M5 21h14"></path>
+        </svg>
+    </div>
+
     <div id="local-warning">WARNING: You opened this as a local file. Multiplayer database connections will be blocked by your browser. Please use a local web server (like VS Code Live Server).</div>
 
     <div id="menu-panel" class="panel">
-                <button class="btn btn-primary" onclick="showCreateRoom()">Create Match</button>
-                <button class="btn" onclick="showJoinRoom()">Join Match</button>
-                <button class="btn" onclick="startOffline()" style="margin-top: 15px;">Pass & Play (Offline)</button>
+                    <div style="display: flex; gap: 25px; justify-content: center;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                        <button class="btn btn-primary" onclick="showCreateRoom()" title="Create Match">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        </button>
+                        <span style="font-size: 11px; font-weight: bold; text-transform: uppercase; color: var(--text-main);">Create</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                        <button class="btn" onclick="showJoinRoom()" title="Join Match">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                        </button>
+                        <span style="font-size: 11px; font-weight: bold; text-transform: uppercase; color: var(--text-main);">Join</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                        <button class="btn" onclick="startOffline()" title="Pass & Play (Offline)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        </button>
+                        <span style="font-size: 11px; font-weight: bold; text-transform: uppercase; color: var(--text-main);">Offline</span>
+                    </div>
+                </div>
             </div>
 
     <div id="create-panel" class="panel hidden">
@@ -163,45 +194,70 @@
     </div>
 
     <div id="join-panel" class="panel hidden">
-        <h2>Join Match</h2>
-        <input type="text" id="input-room-code" placeholder="Enter 4-Digit Code" maxlength="4">
-        <p id="join-error" style="color: var(--danger); font-size: 14px; display: none;"></p>
-        <button class="btn btn-primary" id="btn-join-submit">Connect</button>
-        <button class="btn" onclick="backToMenu()">Back</button>
-    </div>
+            <h2>Join Match</h2>
+            <input type="text" id="input-room-code" placeholder="Enter 4-Digit Code" maxlength="4">
+            <p id="join-error" style="color: var(--danger); font-size: 14px; display: none;"></p>
+            <div style="display: flex; gap: 15px; margin-top: 5px;">
+                <button class="btn" onclick="backToMenu()" title="Back">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                </button>
+                <button class="btn btn-primary" id="btn-join-submit" title="Connect">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </button>
+            </div>
+        </div>
 
     <div id="game-screen">
         <div id="status-banner">Waiting for Match...</div>
         <div id="board"></div>
-                <div style="display: flex; gap: 10px; width: 100%; max-width: var(--board-size); margin-top: 15px;">
-                                    <button id="btn-leave" class="btn btn-danger" onclick="leaveMatch()">Leave Match</button>
-                                    <button id="btn-restart" class="btn btn-primary hidden" onclick="restartMatch()">Rematch</button>
-                                </div>
+                <div style="display: flex; gap: 15px; width: 100%; justify-content: center; max-width: var(--board-size); margin-top: 15px;">
+                                                    <button id="btn-leave" class="btn btn-danger" onclick="leaveMatch()" title="Leave Match">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                                    </button>
+                                                    <button id="btn-restart" class="btn btn-primary hidden" onclick="restartMatch()" title="Rematch">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                                    </button>
+                                                </div>
                             </div>
 
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
     
     <script>
-        if (window.location.protocol === 'file:') {
-            document.getElementById('local-warning').style.display = 'block';
-        }
-    </script>
+            if (window.location.protocol === 'file:') {
+                document.getElementById('local-warning').style.display = 'block';
+            }
+        </script>
 
-    <script type="module">
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-            import { getDatabase, ref, onValue, set, get, onDisconnect } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+        <script type="module">
+                // Firebase Setup - Loaded dynamically so the app won't crash if blocked or offline
+                let db = null;
+                let ref, onValue, set, get, onDisconnect;
 
-            // Firebase Setup
-            const firebaseConfig = {
-                apiKey: "AIzaSyBhg8EM5pSFqtqPCtCnzcySYC6DMoRBevE",
-                databaseURL: "https://chess-361a1-default-rtdb.firebaseio.com"
-            };
-            const app = initializeApp(firebaseConfig);
-            const db = getDatabase(app);
+                (async () => {
+                    try {
+                        const appPkg = await import("https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js");
+                        const dbPkg = await import("https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js");
+                
+                        const firebaseConfig = {
+                            apiKey: "AIzaSyBhg8EM5pSFqtqPCtCnzcySYC6DMoRBevE",
+                            databaseURL: "https://chess-361a1-default-rtdb.firebaseio.com"
+                        };
+                        const app = appPkg.initializeApp(firebaseConfig);
+                        db = dbPkg.getDatabase(app);
+                
+                        ref = dbPkg.ref;
+                        onValue = dbPkg.onValue;
+                        set = dbPkg.set;
+                        get = dbPkg.get;
+                        onDisconnect = dbPkg.onDisconnect;
+                    } catch (err) {
+                        console.warn("Firebase blocked or offline. Multiplayer disabled.", err);
+                    }
+                })();
 
-            // State
-            const game = new Chess();
-                const sounds = {
+                // State
+                const game = typeof Chess !== 'undefined' ? new Chess() : null;
+                    const sounds = {
                     move: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-self.mp3'),
                     capture: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/capture.mp3'),
                     check: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-check.mp3'),
@@ -219,9 +275,10 @@
 
         // --- UI Navigation Methods (Exposed to window for HTML buttons) ---
         
-                        window.showCreateRoom = async () => {
-                            document.getElementById('menu-panel').classList.add('hidden');
-                            document.getElementById('create-panel').classList.remove('hidden');
+                                window.showCreateRoom = async () => {
+                                    if (!db) return alert("Multiplayer is currently unavailable. Please check your internet connection or adblocker.");
+                                    document.getElementById('menu-panel').classList.add('hidden');
+                                    document.getElementById('create-panel').classList.remove('hidden');
             
                     // Generate a random 4 digit code
                     const code = Math.floor(1000 + Math.random() * 9000).toString();
@@ -279,8 +336,9 @@
                 };
 
         window.startOffline = () => {
-                            document.getElementById('menu-panel').classList.add('hidden');
-                            document.getElementById('game-screen').style.display = 'flex';
+                                    if (!game) return alert("Game engine failed to load. Please check your internet connection.");
+                                    document.getElementById('menu-panel').classList.add('hidden');
+                                    document.getElementById('game-screen').style.display = 'flex';
                     currentMode = 'offline';
                     myColor = 'w';
                     statusBanner.innerText = "Pass & Play (Offline)";
@@ -316,11 +374,17 @@
                                                                                                 };
 
                 // --- Join Logic ---
-                                        document.getElementById('btn-join-submit').addEventListener('click', async () => {
-                                            const errorText = document.getElementById('join-error');
-                                            const code = document.getElementById('input-room-code').value.trim();
+                                                        document.getElementById('btn-join-submit').addEventListener('click', async () => {
+                                                            const errorText = document.getElementById('join-error');
+                                                            if (!db) {
+                                                                errorText.innerText = "Multiplayer unavailable (Blocked or Offline).";
+                                                                errorText.style.display = 'block';
+                                                                return;
+                                                            }
+                            
+                                                            const code = document.getElementById('input-room-code').value.trim();
             
-                                            if (code.length !== 4) {
+                                                            if (code.length !== 4) {
                                 errorText.innerText = "Enter a 4-digit code.";
                                 errorText.style.display = 'block';
                                 return;
