@@ -384,15 +384,27 @@
                             const sqId = String.fromCharCode(97 + c) + (8 - r);
                     
                             const sqEl = document.createElement('div');
-                            sqEl.className = `square ${(r + c) % 2 === 0 ? 'light' : 'dark'}`;
-                            sqEl.id = sqId;
+                                                sqEl.className = `square ${(r + c) % 2 === 0 ? 'light' : 'dark'}`;
+                                                sqEl.id = sqId;
                     
-                            if (selectedSquare === sqId) sqEl.classList.add('selected');
-                            if (possibleMoves.some(m => m.to === sqId)) sqEl.classList.add('possible-move');
+                                                if (selectedSquare === sqId) sqEl.classList.add('selected');
+                    
+                                                const possibleMove = possibleMoves.find(m => m.to === sqId);
+                                                if (possibleMove) {
+                                                    if (possibleMove.flags.includes('c') || possibleMove.flags.includes('e')) {
+                                                        sqEl.classList.add('capture-target');
+                                                    } else {
+                                                        sqEl.classList.add('possible-move');
+                                                    }
+                                                }
 
-                            if (squareData) {
-                                const img = document.createElement('img');
-                                img.src = `https://chessboardjs.com/img/chesspieces/wikipedia/${squareData.color}${squareData.type.toUpperCase()}.png`;
+                                                if (squareData) {
+                                                    if (squareData.type === 'k' && squareData.color === game.turn() && game.in_check()) {
+                                                        sqEl.classList.add('in-check');
+                                                    }
+
+                                                    const img = document.createElement('img');
+                                                    img.src = `https://chessboardjs.com/img/chesspieces/wikipedia/${squareData.color}${squareData.type.toUpperCase()}.png`;
                                 img.className = `piece ${flipPieces ? 'rotate-piece' : ''}`;
                                 sqEl.appendChild(img);
                             }
