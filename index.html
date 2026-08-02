@@ -271,12 +271,14 @@
                 };
 
                 window.leaveMatch = async () => {
-                    if (currentMode !== 'offline' && roomId) {
-                        // Remove player from the match to trigger "Opponent disconnected!" for the other player
-                        await set(ref(db, 'games/' + roomId + '/players/' + myColor), null);
-                    }
-                    window.location.reload();
-                };
+                            if (!confirm("Are you sure you want to resign and leave the match?")) return;
+            
+                            if (currentMode !== 'offline' && roomId) {
+                                // Remove player from the match to trigger "Opponent disconnected!" for the other player
+                                await set(ref(db, 'games/' + roomId + '/players/' + myColor), null);
+                            }
+                            window.location.reload();
+                        };
 
                 // --- Join Logic ---
         document.getElementById('btn-join-submit').addEventListener('click', async () => {
