@@ -207,25 +207,28 @@
         </div>
 
     <div id="join-panel" class="panel hidden" style="animation: cardMorphIn 0.6s cubic-bezier(0.4, 0, 0.2, 1); border: none;">
-            <h2>Join Match</h2>
-            <input type="text" id="input-room-code" placeholder="Enter 4-Digit Code" maxlength="4">
-            <p id="join-error" style="color: var(--danger); font-size: 14px; display: none;"></p>
-            <div style="display: flex; gap: 15px; margin-top: 5px;">
-                <button class="btn" onclick="backToMenu()" title="Back">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                </button>
-                <button class="btn btn-primary" id="btn-join-submit" title="Connect">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </button>
+                <h2>Join Match</h2>
+                <div id="otp-container" style="display: flex; gap: 12px; justify-content: center;">
+                    <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-box" data-index="0" style="width: 48px; height: 56px; padding: 0; box-sizing: border-box; background: rgba(255, 255, 255, 0.05); color: transparent; text-shadow: 0 0 0 var(--success); caret-color: var(--success); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 28px; text-align: center; font-weight: bold; outline: none; -webkit-text-security: disc;">
+                    <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-box" data-index="1" style="width: 48px; height: 56px; padding: 0; box-sizing: border-box; background: rgba(255, 255, 255, 0.05); color: transparent; text-shadow: 0 0 0 var(--success); caret-color: var(--success); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 28px; text-align: center; font-weight: bold; outline: none; -webkit-text-security: disc;">
+                    <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-box" data-index="2" style="width: 48px; height: 56px; padding: 0; box-sizing: border-box; background: rgba(255, 255, 255, 0.05); color: transparent; text-shadow: 0 0 0 var(--success); caret-color: var(--success); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 28px; text-align: center; font-weight: bold; outline: none; -webkit-text-security: disc;">
+                    <input type="tel" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-box" data-index="3" style="width: 48px; height: 56px; padding: 0; box-sizing: border-box; background: rgba(255, 255, 255, 0.05); color: transparent; text-shadow: 0 0 0 var(--success); caret-color: var(--success); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 28px; text-align: center; font-weight: bold; outline: none; -webkit-text-security: disc;">
+                </div>
+                <input type="hidden" id="input-room-code">
+                <p id="join-error" style="color: var(--danger); font-size: 14px; display: none;"></p>
+                <div style="display: flex; gap: 15px; margin-top: 5px;">
+                    <button class="btn" onclick="backToMenu()" title="Back">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    </button>
+                </div>
             </div>
-        </div>
 
     <div id="game-screen">
                     <div id="status-banner">Waiting for Match...</div>
                     <div id="board"></div>
                                                             <div style="display: flex; gap: 40px; width: 100%; justify-content: center; align-items: center; max-width: var(--board-size); margin-top: 40px; margin-bottom: 20px;">
                                                                                                                                                                         <button id="btn-leave" class="btn" style="background: transparent; border: none; color: var(--danger); width: auto; height: auto; padding: 0;" onclick="leaveMatch()" title="Leave Match"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="transform: scaleX(-1);"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
-                                                                                                                                                                        <button id="btn-undo" class="btn hidden" style="width: auto; height: auto; background: transparent; border: none; padding: 0;" onclick="undoMove()" title="Undo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg></button>
+                                                                                                                                                                        <button id="btn-undo" class="btn hidden" style="width: auto; height: auto; background: transparent; border: none; padding: 0;" onclick="undoMove()" title="Undo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5c1.5 -1.2 3.5 -1.7 5.5 -1.4c1.2 0.2 1 1.6 0 1.9c-1.8 0.6 -3.6 0.9 -5.5 0.7c-0.4 0 -0.7 -0.3 -0.7 -0.7c0 -0.9 0 -1.8 0.1 -2.7"></path><path d="M20.5 17a8.5 8.5 0 0 0 -8.5 -8.5c-2.1 0 -4 0.75 -5.5 2"></path></svg></button>
                                                                                                                                                                         <button id="btn-restart" class="btn btn-primary hidden" onclick="restartMatch()">Rematch</button>
                                                                                                                                                                                                         </div>
                                         </div>
@@ -395,24 +398,51 @@
                                                                                                 };
 
                 // --- Join Logic ---
-                                                        document.getElementById('btn-join-submit').addEventListener('click', async () => {
-                                                            const errorText = document.getElementById('join-error');
-                                                            if (!db) {
-                                                                errorText.innerText = "Multiplayer unavailable (Blocked or Offline).";
-                                                                errorText.style.display = 'block';
-                                                                return;
-                                                            }
-                            
-                                                            const code = document.getElementById('input-room-code').value.trim();
-            
-                                                            if (code.length !== 4) {
-                                errorText.innerText = "Enter a 4-digit code.";
-                                errorText.style.display = 'block';
-                                return;
-                            }
+                                                                        const otpBoxes = Array.from(document.querySelectorAll('.otp-box'));
 
-                            try {
-                                const snapshot = await get(ref(db, 'games/' + code));
+                                                                        otpBoxes.forEach((box, idx) => {
+                                                                            box.addEventListener('input', () => {
+                                                                                box.value = box.value.replace(/[^0-9]/g, '');
+                                                                                if (box.value && idx < otpBoxes.length - 1) {
+                                                                                    otpBoxes[idx + 1].focus();
+                                                                                }
+                                                                                const combined = otpBoxes.map(b => b.value).join('');
+                                                                                document.getElementById('input-room-code').value = combined;
+                                                                                if (combined.length === 4) {
+                                                                                    attemptJoin(combined);
+                                                                                }
+                                                                            });
+                                                                            box.addEventListener('keydown', (e) => {
+                                                                                if (e.key === 'Backspace' && !box.value && idx > 0) {
+                                                                                    otpBoxes[idx - 1].focus();
+                                                                                }
+                                                                            });
+                                                                            box.addEventListener('paste', (e) => {
+                                                                                e.preventDefault();
+                                                                                const pasted = (e.clipboardData.getData('text') || '').replace(/[^0-9]/g, '').slice(0, 4);
+                                                                                pasted.split('').forEach((ch, i) => { if (otpBoxes[i]) otpBoxes[i].value = ch; });
+                                                                                const combined = otpBoxes.map(b => b.value).join('');
+                                                                                document.getElementById('input-room-code').value = combined;
+                                                                                if (combined.length === 4) {
+                                                                                    otpBoxes[3].focus();
+                                                                                    attemptJoin(combined);
+                                                                                } else if (pasted.length > 0) {
+                                                                                    otpBoxes[Math.min(pasted.length, 3)].focus();
+                                                                                }
+                                                                            });
+                                                                        });
+
+                                                                        async function attemptJoin(code) {
+                                                                            const errorText = document.getElementById('join-error');
+                                                                            errorText.style.display = 'none';
+                                                                            if (!db) {
+                                                                                errorText.innerText = "Multiplayer unavailable (Blocked or Offline).";
+                                                                                errorText.style.display = 'block';
+                                                                                return;
+                                                                            }
+
+                                            try {
+                                                                            const snapshot = await get(ref(db, 'games/' + code));
                                 if (!snapshot.exists()) {
                                     errorText.innerText = "Room not found or expired.";
                                     errorText.style.display = 'block';
@@ -437,13 +467,13 @@
                                 setupGameSync();
                                 renderBoard();
                             } catch (err) {
-                                console.error("Firebase error:", err);
-                                errorText.innerText = "Connection failed: " + err.message;
-                                errorText.style.display = 'block';
-                            }
-                        });
+                                                            console.error("Firebase error:", err);
+                                                            errorText.innerText = "Connection failed: " + err.message;
+                                                            errorText.style.display = 'block';
+                                                        }
+                                                    }
 
-        // --- Game Sync ---
+                                    // --- Game Sync ---
                         function setupGameSync() {
                             onValue(ref(db, 'games/' + roomId + '/fen'), (snapshot) => {
                                 const serverFen = snapshot.val();
