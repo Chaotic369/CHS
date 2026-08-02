@@ -69,27 +69,29 @@
             h2 { margin: 0 0 10px 0; text-align: center; font-size: 18px; color: var(--text-main); }
 
             .btn {
-                        background: transparent;
-                        color: white;
-                        border: 2px solid rgba(255, 255, 255, 0.2);
-                        padding: 0;
-                        border-radius: 50%;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        cursor: pointer;
-                        width: 55px;
-                        height: 55px;
-                        transition: transform 0.2s ease, background 0.2s ease;
-                    }
-                    .btn svg {
-                        width: 24px;
-                        height: 24px;
-                        stroke-width: 2;
-                    }
-                    .btn-primary { color: var(--accent); border-color: var(--accent); }
-                    .btn-danger { color: var(--danger); border-color: var(--danger); }
-                    .btn:active { transform: scale(0.92); background: rgba(255, 255, 255, 0.1); }
+                                    background: rgba(255, 255, 255, 0.1);
+                                    color: white;
+                                    border: none;
+                                    padding: 10px 16px;
+                                    border-radius: 12px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    cursor: pointer;
+                                    width: 100%;
+                                    text-transform: uppercase;
+                                    font-weight: bold;
+                                    font-size: 13px;
+                                    transition: transform 0.2s ease, background 0.2s ease;
+                                }
+                                .btn svg {
+                                    width: 20px;
+                                    height: 20px;
+                                    stroke-width: 2;
+                                }
+                                .btn-primary { background: var(--accent); color: white; }
+                                .btn-danger { background: transparent; color: var(--danger); }
+                                .btn:active { transform: scale(0.98); background: rgba(255, 255, 255, 0.15); }
 
             input {
                 width: 100%;
@@ -178,12 +180,12 @@
             </div>
 
     <div id="create-panel" class="panel hidden">
-        <h2>Room Created!</h2>
-        <p>Give this code to Player 2:</p>
-        <div id="display-room-code" class="code-display">----</div>
-        <p style="font-size: 14px; color: #aaa; text-align: center;">Waiting for Player 2 to join...</p>
-        <button class="btn btn-danger" onclick="cancelRoom()">Cancel</button>
-    </div>
+            <h2>Room Created!</h2>
+            <p>Give this code to Player 2:</p>
+            <div id="display-room-code" class="code-display">----</div>
+            <p style="font-size: 14px; color: #aaa; text-align: center;">Waiting for Player 2 to join...</p>
+            <button class="btn" style="background: transparent; border: none; color: var(--danger); width: auto; height: auto; border-radius: 0;" onclick="cancelRoom()">Cancel</button>
+        </div>
 
     <div id="join-panel" class="panel hidden">
             <h2>Join Match</h2>
