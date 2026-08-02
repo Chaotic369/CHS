@@ -640,38 +640,12 @@
                         renderBoard();
                     }
 
-                    // --- Mobile Game Style UI Click Sound ---
-                            let uiAudioCtx;
+                    // --- Custom UI Click Sound ---
+                            const btnAudio = new Audio('button.mp3');
                             const playBtnSound = () => {
                                 try {
-                                    if (!uiAudioCtx) {
-                                        const AudioContext = window.AudioContext || window.webkitAudioContext;
-                                        if (!AudioContext) return;
-                                        uiAudioCtx = new AudioContext();
-                                    }
-                                    const ctx = uiAudioCtx;
-                                    if (ctx.state === 'suspended') ctx.resume();
-                
-                                    // Crisp, tactile digital click (Free Fire/PUBG menu style)
-                                    const osc = ctx.createOscillator();
-                                    const gain = ctx.createGain();
-                
-                                    osc.connect(gain);
-                                    gain.connect(ctx.destination);
-                
-                                    osc.type = 'sine'; // Clean digital tone
-                
-                                    // Extremely rapid pitch drop to create a sharp "tap" transient
-                                    osc.frequency.setValueAtTime(2500, ctx.currentTime);
-                                    osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.04);
-                
-                                    // Sharp volume envelope: instant hit, immediate decay
-                                    gain.gain.setValueAtTime(0, ctx.currentTime);
-                                    gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.005);
-                                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
-                
-                                    osc.start(ctx.currentTime);
-                                    osc.stop(ctx.currentTime + 0.06);
+                                    // Clone the node so rapid clicks overlap correctly instead of cutting off
+                                    btnAudio.cloneNode(true).play().catch(()=>{});
                                 } catch (e) {}
                             };
 
