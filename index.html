@@ -120,13 +120,15 @@
         #game-screen { display: none; flex-direction: column; align-items: center; width: 100%; }
 
         #status-banner {
-            width: 100%; max-width: var(--board-size);
-            padding: 12px; margin-bottom: 10px;
-            background: var(--panel-bg);
-            border: 2px solid #2a2d6a; border-radius: 8px;
-            text-align: center; font-weight: bold; color: #b3b3cc;
-        }
-        #status-banner.active { border-color: var(--success); color: var(--success); }
+                    width: 100%; max-width: var(--board-size);
+                    padding: 12px; margin-bottom: 10px;
+                    background: var(--panel-bg);
+                    border-radius: 20px;
+                    text-align: center; font-weight: bold; color: #b3b3cc;
+                    backdrop-filter: blur(20px);
+                    -webkit-backdrop-filter: blur(20px);
+                }
+                #status-banner.active { color: var(--success); text-shadow: 0 0 10px rgba(0,200,83,0.5); }
 
         #board {
             display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr);
