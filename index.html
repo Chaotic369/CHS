@@ -181,16 +181,25 @@
 
     <!-- Background Intro Image & Music -->
             <img id="intro-video" src="intro.jpg" alt="Background" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; opacity: 0.8; transform: translateZ(0); will-change: transform;">
-            <audio id="bg-music" loop>
-                <source src="music.mp3" type="audio/mpeg">
-                <source src="music.wave" type="audio/wav">
-                <source src="music.wav" type="audio/wav">
-            </audio>
-            <script>
+            <audio id="bg-music" autoplay loop>
+                        <source src="music.mp3" type="audio/mpeg">
+                        <source src="music.wave" type="audio/wav">
+                        <source src="music.wav" type="audio/wav">
+                    </audio>
+                    <script>
                         const bgMusic = document.getElementById('bg-music');
                         const introImg = document.getElementById('intro-video');
 
                         let audioStarted = false;
+            
+                        // Attempt to autoplay immediately
+                        bgMusic.volume = 0.2;
+                        bgMusic.play().then(() => {
+                            audioStarted = true;
+                        }).catch(err => {
+                            console.warn("Browser blocked audio autoplay. Waiting for user click.", err);
+                        });
+
                         document.body.addEventListener('click', function handleAudio(e) {
                             bgMusic.volume = 0.2;
                 
