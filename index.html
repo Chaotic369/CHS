@@ -350,9 +350,9 @@
 
                     if (squareData) {
                         const img = document.createElement('img');
-                        img.src = `https://chessboardjs.com/img/chesspieces/wikipedia/${squareData.color}${squareData.type.toUpperCase()}.png`;
-                        img.className = `piece ${isFlipped ? 'rotate-piece' : ''} ${squareData.color === 'b' ? 'black-piece' : ''}`;
-                        sqEl.appendChild(img);
+                                                img.src = `https://chessboardjs.com/img/chesspieces/wikipedia/${squareData.color}${squareData.type.toUpperCase()}.png`;
+                                                img.className = `piece ${isFlipped ? 'rotate-piece' : ''}`;
+                                                sqEl.appendChild(img);
                     }
                     
                     sqEl.addEventListener('click', () => handleSquareClick(sqId));
