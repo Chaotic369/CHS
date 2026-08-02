@@ -297,7 +297,6 @@
                 };
 
         window.startOffline = () => {
-                            if (!game) return alert("Game engine failed to load. Please check your internet connection.");
                             document.getElementById('menu-panel').classList.add('hidden');
                             document.getElementById('game-screen').style.display = 'flex';
                     currentMode = 'offline';
@@ -335,12 +334,6 @@
                 // --- Join Logic ---
                                         document.getElementById('btn-join-submit').addEventListener('click', async () => {
                                             const errorText = document.getElementById('join-error');
-                                            if (!db) {
-                                                errorText.innerText = "Multiplayer unavailable (Blocked or Offline).";
-                                                errorText.style.display = 'block';
-                                                return;
-                                            }
-                            
                                             const code = document.getElementById('input-room-code').value.trim();
             
                                             if (code.length !== 4) {
