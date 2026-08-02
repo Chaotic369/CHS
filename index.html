@@ -187,20 +187,36 @@
                 <source src="music.wav" type="audio/wav">
             </audio>
             <script>
-                const bgMusic = document.getElementById('bg-music');
-                const introImg = document.getElementById('intro-video');
+                        const bgMusic = document.getElementById('bg-music');
+                        const introImg = document.getElementById('intro-video');
 
-                // AUDIO FIX: Plays the background music the moment the user clicks anywhere
-                            document.body.addEventListener('click', function playMusic() {
-                                bgMusic.volume = 0.2; // Reduces background music volume to 20%
-                                bgMusic.play().catch(e => console.warn("Audio play failed:", e));
-                            }, { once: true });
+                        let audioStarted = false;
+                        document.body.addEventListener('click', function handleAudio(e) {
+                            bgMusic.volume = 0.2;
+                
+                            // Start music on first interaction anywhere to unlock browser audio restrictions
+                            if (!audioStarted) {
+                                bgMusic.play().catch(err => console.warn("Audio play failed:", err));
+                                audioStarted = true;
+                                return;
+                            }
 
-                // SHIM: Prevents errors when game starts and tries to .pause() the old video ID
-                introImg.pause = function() {
-                    bgMusic.pause();
-                };
-            </script>
+                            // Toggle play/pause only if clicking the background (not UI elements)
+                            const isUI = e.target.closest('.panel, #board, .btn, input, #status-banner');
+                            if (!isUI) {
+                                if (bgMusic.paused) {
+                                    bgMusic.play().catch(err => console.warn("Audio play failed:", err));
+                                } else {
+                                    bgMusic.pause();
+                                }
+                            }
+                        });
+
+                        // SHIM: Prevents errors when game starts and tries to .pause() the old video ID
+                        introImg.pause = function() {
+                            bgMusic.pause();
+                        };
+                    </script>
 
     <div id="local-warning">WARNING: You opened this as a local file. Multiplayer database connections will be blocked by your browser. Please use a local web server (like VS Code Live Server).</div>
 
