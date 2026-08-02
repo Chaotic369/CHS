@@ -201,25 +201,25 @@
                         });
 
                         document.body.addEventListener('click', function handleAudio(e) {
-                            bgMusic.volume = 0.2;
+                                                    bgMusic.volume = 0.2;
                 
-                            // Start music on first interaction anywhere to unlock browser audio restrictions
-                            if (!audioStarted) {
-                                bgMusic.play().catch(err => console.warn("Audio play failed:", err));
-                                audioStarted = true;
-                                return;
-                            }
+                                                    // Start music on first interaction anywhere to unlock browser audio restrictions
+                                                    if (!audioStarted) {
+                                                        bgMusic.play().catch(err => console.warn("Audio play failed:", err));
+                                                        audioStarted = true;
+                                                        return;
+                                                    }
 
-                            // Toggle play/pause only if clicking the background (not UI elements)
-                            const isUI = e.target.closest('.panel, #board, .btn, input, #status-banner');
-                            if (!isUI) {
-                                if (bgMusic.paused) {
-                                    bgMusic.play().catch(err => console.warn("Audio play failed:", err));
-                                } else {
-                                    bgMusic.pause();
-                                }
-                            }
-                        });
+                                                    // Toggle play/pause ONLY when clicking outside the board/UI entirely
+                                                    const isUI = e.target.closest('.panel, #board, .btn, input, #status-banner, #game-screen > div');
+                                                    if (!isUI) {
+                                                        if (bgMusic.paused) {
+                                                            bgMusic.play().catch(err => console.warn("Audio play failed:", err));
+                                                        } else {
+                                                            bgMusic.pause();
+                                                        }
+                                                    }
+                                                });
 
                         // SHIM: Prevents errors when game starts and tries to .pause() the old video ID
                                                 const nativePause = introImg.pause.bind(introImg);
