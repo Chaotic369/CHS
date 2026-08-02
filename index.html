@@ -331,14 +331,15 @@
                         onDisconnect(ref(db, 'games/' + roomId + '/players/w')).remove();
 
                         // Listen for Player 2 joining
-                        onValue(ref(db, 'games/' + roomId + '/players/b'), (snapshot) => {
-                            if (snapshot.val()) {
-                                // Player 2 joined! Start the game.
-                                                                                                document.getElementById('create-panel').classList.add('hidden');
-                                                                                                document.getElementById('game-screen').style.display = 'flex';
-                                                                                                document.getElementById('intro-video').style.display = 'none';
-                                                                                                                    statusBanner.innerText = "";
-                                                                                    statusBanner.classList.remove('active');
+                                                onValue(ref(db, 'games/' + roomId + '/players/b'), (snapshot) => {
+                                                    if (snapshot.val()) {
+                                                        // Player 2 joined! Start the game.
+                                                                                                                        document.getElementById('create-panel').classList.add('hidden');
+                                                                                                                        document.getElementById('game-screen').style.display = 'flex';
+                                                                                                                        document.getElementById('intro-video').style.display = 'none';
+                                                                                                                        document.getElementById('intro-video').pause();
+                                                                                                                                            statusBanner.innerText = "";
+                                                                                                            statusBanner.classList.remove('active');
                                                                 setupGameSync();
                                 renderBoard();
                             }
@@ -368,11 +369,12 @@
                 };
 
         window.startOffline = () => {
-                                                            if (!game) return alert("Game engine failed to load. Please check your internet connection.");
-                                                            document.getElementById('menu-panel').classList.add('hidden');
-                                                            document.getElementById('game-screen').style.display = 'flex';
-                                                            document.getElementById('intro-video').style.display = 'none';
-                                            currentMode = 'offline';
+                                                                    if (!game) return alert("Game engine failed to load. Please check your internet connection.");
+                                                                    document.getElementById('menu-panel').classList.add('hidden');
+                                                                    document.getElementById('game-screen').style.display = 'flex';
+                                                                    document.getElementById('intro-video').style.display = 'none';
+                                                                    document.getElementById('intro-video').pause();
+                                                    currentMode = 'offline';
                                     myColor = 'w';
                                     statusBanner.innerText = "";
                                     statusBanner.classList.remove('active');
@@ -475,14 +477,15 @@
                                 currentMode = 'client';
                 
                                 const playerBRef = ref(db, 'games/' + roomId + '/players/b');
-                                await set(playerBRef, true);
-                                onDisconnect(playerBRef).remove();
+                                                                await set(playerBRef, true);
+                                                                onDisconnect(playerBRef).remove();
 
-                                document.getElementById('join-panel').classList.add('hidden');
-                                                                                                document.getElementById('game-screen').style.display = 'flex';
-                                                                                                document.getElementById('intro-video').style.display = 'none';
-                                                                                                            statusBanner.innerText = "";
-                                                                            statusBanner.classList.remove('active');
+                                                                document.getElementById('join-panel').classList.add('hidden');
+                                                                                                                                document.getElementById('game-screen').style.display = 'flex';
+                                                                                                                                document.getElementById('intro-video').style.display = 'none';
+                                                                                                                                document.getElementById('intro-video').pause();
+                                                                                                                                            statusBanner.innerText = "";
+                                                                                                            statusBanner.classList.remove('active');
                 
                                                                 game.load(snapshot.val().fen);
                                 setupGameSync();
