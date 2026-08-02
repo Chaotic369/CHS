@@ -66,12 +66,10 @@
                                                     background: rgba(0, 0, 0, 0.75);
                                                     backdrop-filter: blur(16px);
                                                     -webkit-backdrop-filter: blur(16px);
-                                                    border: 1px solid rgba(255, 255, 255, 0.12);
                                                     border-radius: 20px;
-                                                    padding: 30px 20px;
-                                                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
-                                                    animation: panelIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-                                                }
+                                                                                padding: 30px 20px;
+                                                                                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+                                                                            }
 
             h2 { margin: 0 0 10px 0; text-align: center; font-size: 18px; color: var(--text-main); }
 
@@ -89,7 +87,7 @@
                                     text-transform: uppercase;
                                     font-weight: bold;
                                     font-size: 13px;
-                                    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                                    transition: none;
                                                                     }
                                 .btn svg {
                                     width: 20px;
@@ -134,7 +132,6 @@
                             background: transparent;
                             text-align: center; font-weight: bold; color: var(--text-main);
                             font-size: 13px;
-                            transition: color 0.4s ease;
                         }
             #status-banner.active { color: var(--success); }
 
@@ -144,41 +141,31 @@
                             border: none; border-radius: 12px; overflow: hidden;
                             box-shadow: 15px 15px 35px rgba(0, 0, 0, 0.75);
                             background: var(--bg-color);
-                            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
                         }
 
-            .square { display: flex; align-items: center; justify-content: center; position: relative; transition: background-color 0.35s ease, box-shadow 0.35s ease; }
+            .square { display: flex; align-items: center; justify-content: center; position: relative; }
             .light { background-color: var(--light-sq); }
             .dark { background-color: var(--dark-sq); }
-            .piece { width: 85%; height: 85%; pointer-events: none; filter: drop-shadow(3px 4px 4px rgba(0,0,0,0.4)); transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+            .piece { width: 85%; height: 85%; pointer-events: none; filter: drop-shadow(3px 4px 4px rgba(0,0,0,0.4)); }
             .rotate-piece { transform: rotate(180deg); }
             .selected { background-color: var(--selected) !important; box-shadow: inset 2px 2px 8px rgba(0,0,0,0.3) !important; }
-            .possible-move::after { content: ''; position: absolute; width: 30%; height: 30%; background-color: var(--highlight); border-radius: 50%; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.5); animation: fadeIn 0.3s ease; }
+            .possible-move::after { content: ''; position: absolute; width: 30%; height: 30%; background-color: var(--highlight); border-radius: 50%; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.5); }
             .capture-target { background-image: radial-gradient(circle, rgba(250, 65, 45, 0.6) 15%, transparent 75%) !important; }
             .in-check { background-image: radial-gradient(circle, rgba(250, 65, 45, 0.8) 10%, transparent 75%) !important; }
 
             /* Animation keyframes */
-                        @keyframes panelIn {
-                                        from { opacity: 0; transform: translateY(12px) scale(0.98); }
-                                        to { opacity: 1; transform: translateY(0) scale(1); }
-                                    }
-                                    @keyframes menuPopIn {
+                        @keyframes menuPopIn {
                                                     from { opacity: 0; }
                                                     to { opacity: 1; }
                                                 }
                                                 @keyframes cardMorphIn {
-                                                    from { opacity: 0; transform: scale(0.92); }
-                                                    to { opacity: 1; transform: scale(1); }
-                                                }
+                                                                from { opacity: 0; }
+                                                                to { opacity: 1; }
+                                                            }
                         @keyframes pieceIn {
                             from { opacity: 0; transform: scale(0.7); }
                             to { opacity: 1; transform: scale(1); }
                         }
-                        @keyframes fadeIn {
-                            from { opacity: 0; }
-                            to { opacity: 1; }
-                        }
-
                         /* Hide logic */
                         .hidden { display: none !important; }
         </style>
@@ -187,7 +174,7 @@
 
     <div id="local-warning">WARNING: You opened this as a local file. Multiplayer database connections will be blocked by your browser. Please use a local web server (like VS Code Live Server).</div>
 
-    <div id="menu-panel" class="panel" style="animation: menuPopIn 1.1s ease-out;">
+    <div id="menu-panel" class="panel" style="animation: menuPopIn 1.1s ease-out; border: none;">
                     <div style="display: flex; gap: 25px; justify-content: center;">
                         <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
                         <button class="btn btn-primary" onclick="showCreateRoom()" title="Create Match">
@@ -210,7 +197,7 @@
                 </div>
             </div>
 
-    <div id="create-panel" class="panel hidden" style="animation: cardMorphIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);">
+    <div id="create-panel" class="panel hidden" style="animation: cardMorphIn 0.6s cubic-bezier(0.4, 0, 0.2, 1); border: none;">
             <h2>Room Created!</h2>
             <p>Give this code to Player 2:</p>
             <div id="display-room-code" class="code-display">----</div>
@@ -218,7 +205,7 @@
             <button class="btn" style="background: transparent; border: none; color: var(--danger); width: auto; height: auto; border-radius: 0;" onclick="cancelRoom()">Cancel</button>
         </div>
 
-    <div id="join-panel" class="panel hidden" style="animation: cardMorphIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);">
+    <div id="join-panel" class="panel hidden" style="animation: cardMorphIn 0.6s cubic-bezier(0.4, 0, 0.2, 1); border: none;">
             <h2>Join Match</h2>
             <input type="text" id="input-room-code" placeholder="Enter 4-Digit Code" maxlength="4">
             <p id="join-error" style="color: var(--danger); font-size: 14px; display: none;"></p>
