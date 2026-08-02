@@ -174,9 +174,21 @@
 <body>
 
     <!-- Background Intro Video -->
-    <video id="intro-video" autoplay loop playsinline style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; opacity: 0.8;">
-            <source src="./intro.mp4" type="video/mp4">
+        <video id="intro-video" autoplay loop muted playsinline style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; opacity: 0.8;">
+            <source id="intro-source" src="intro.mp4" type="video/mp4">
         </video>
+        <script>
+            // 1. CACHE BUSTER: Forces the browser to load the newest video file
+            const videoSrc = document.getElementById('intro-source');
+            const video = document.getElementById('intro-video');
+            videoSrc.src = 'intro.mp4?t=' + new Date().getTime();
+            video.load();
+
+            // 2. AUDIO FIX: Unmutes the video the moment the user clicks anywhere on the page
+            document.body.addEventListener('click', function unmuteVideo() {
+                video.muted = false;
+            }, { once: true });
+        </script>
 
     <div id="local-warning">WARNING: You opened this as a local file. Multiplayer database connections will be blocked by your browser. Please use a local web server (like VS Code Live Server).</div>
 
