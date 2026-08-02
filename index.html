@@ -8,17 +8,14 @@
             :root {
                 --board-size: min(460px, 100vw - 20px, 100vh - 250px);
             
-                /* Dark Neumorphic Theme */
-                                            --bg-color: #000000;
-                            --shadow-dark: #1c1e22;
-                            --shadow-light: #363c42;
-                            --text-main: #d1d5db;
+                --bg-color: #000000;
+                --text-main: #d1d5db;
             
-                            /* Board Colors */
-                            --light-sq: #ebecd0;
-                            --dark-sq: #739552;
-                            --highlight: rgba(0, 0, 0, 0.4);
-                            --selected: rgba(129, 182, 76, 0.4);
+                /* Board Colors */
+                --light-sq: #ebecd0;
+                --dark-sq: #739552;
+                --highlight: rgba(0, 0, 0, 0.4);
+                --selected: rgba(129, 182, 76, 0.4);
             
                 --accent: #81b64c; 
                 --danger: #fa412d;
@@ -56,142 +53,87 @@
             }
 
             /* --- UI Panels --- */
-                        .panel {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            gap: 15px;
-                            width: 85%;
-                            max-width: 320px;
-                            position: absolute;
-                            z-index: 100;
-                            background: transparent;
-                            padding: 25px 20px;
-                        }
+            .panel {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                width: 85%;
+                max-width: 320px;
+                position: absolute;
+                z-index: 100;
+                background: transparent;
+                padding: 25px 20px;
+            }
 
             h2 { margin: 0 0 10px 0; text-align: center; font-size: 18px; color: var(--text-main); }
 
             .btn {
-                                        background: var(--bg-color);
-                                        color: var(--text-main);
-                                        border: none;
-                                        padding: 10px 16px;
-                                        border-radius: 30px;
-                                        font-size: 13px;
-                                        font-weight: bold;
-                                        cursor: pointer;
-                                        width: 100%;
-                                        text-transform: uppercase;
-                                        box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.6);
-                                        transition: all 0.2s ease;
-                                    }
-                                    .btn-primary { color: var(--accent); }
-                                    .btn-danger { 
-                                        color: var(--danger); 
-                                        background: transparent; 
-                                        box-shadow: none; 
-                                    }
-                                    .btn:active { 
-                                        box-shadow: inset 6px 6px 15px rgba(0, 0, 0, 0.6); 
-                                        transform: scale(0.98);
-                                    }
-                                    .btn-danger:active {
-                                        box-shadow: none;
-                                        background: rgba(255, 255, 255, 0.05);
-                                    }
+                background: rgba(255, 255, 255, 0.1);
+                color: white;
+                border: none;
+                padding: 10px 16px;
+                border-radius: 30px;
+                font-size: 13px;
+                font-weight: bold;
+                cursor: pointer;
+                width: 100%;
+                text-transform: uppercase;
+                transition: transform 0.2s ease;
+            }
+            .btn-primary { background: var(--accent); color: white; }
+            .btn-danger { background: transparent; color: var(--danger); }
+            .btn:active { transform: scale(0.98); }
 
-                        input {
-                            width: 100%;
-                            padding: 12px;
-                            box-sizing: border-box;
-                            background: var(--bg-color);
-                            color: var(--text-main);
-                            border: none;
-                            border-radius: 12px;
-                            font-size: 14px;
-                            text-align: center;
-                            text-transform: uppercase;
-                            font-weight: bold;
-                            outline: none;
-                            box-shadow: inset 8px 8px 18px rgba(0, 0, 0, 0.6);
-                        }
-
-                        .code-display {
-                            font-size: 24px;
-                            letter-spacing: 4px;
-                            color: var(--success);
-                            background: var(--bg-color);
-                            padding: 12px 20px;
-                            border-radius: 12px;
-                            margin: 8px 0;
-                            box-shadow: inset 8px 8px 18px rgba(0, 0, 0, 0.6);
-                        }
-                        .btn-primary { color: var(--accent); }
-                        .btn-danger { 
-                            color: var(--danger); 
-                            background: transparent; 
-                            box-shadow: none; 
-                        }
-                        .btn:active { 
-                            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); 
-                            transform: scale(0.98);
-                        }
-                        .btn-danger:active {
-                                                    box-shadow: none;
-                                                    background: rgba(255, 255, 255, 0.05);
-                                                }
-
-                                    input {
+            input {
                 width: 100%;
                 padding: 12px;
                 box-sizing: border-box;
-                background: var(--bg-color);
-                color: var(--text-main);
-                border: none;
+                background: rgba(255, 255, 255, 0.05);
+                color: white;
+                border: 1px solid rgba(255, 255, 255, 0.1);
                 border-radius: 12px;
                 font-size: 14px;
                 text-align: center;
                 text-transform: uppercase;
                 font-weight: bold;
                 outline: none;
-                box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
             }
 
             .code-display {
                 font-size: 24px;
                 letter-spacing: 4px;
                 color: var(--success);
-                background: var(--bg-color);
+                background: transparent;
                 padding: 12px 20px;
                 border-radius: 12px;
                 margin: 8px 0;
-                box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
             }
 
             /* --- Game Screen --- */
-                        #game-screen { display: none; flex-direction: column; align-items: center; width: 100%; }
+            #game-screen { display: none; flex-direction: column; align-items: center; width: 100%; }
 
-                        #status-banner {
-                            width: 100%; max-width: var(--board-size);
-                            padding: 12px; margin-bottom: 15px;
-                            background: transparent;
-                            text-align: center; font-weight: bold; color: var(--text-main);
-                            font-size: 13px;
-                        }
-            #status-banner.active { color: var(--accent); }
+            #status-banner {
+                width: 100%; max-width: var(--board-size);
+                padding: 12px; margin-bottom: 15px;
+                background: transparent;
+                text-align: center; font-weight: bold; color: var(--text-main);
+                font-size: 13px;
+            }
+            #status-banner.active { color: var(--success); }
 
             #board {
-                            display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr);
-                            width: 100%; max-width: var(--board-size); aspect-ratio: 1 / 1;
-                            border: none; border-radius: 12px; overflow: hidden;
-                            box-shadow: 15px 15px 35px rgba(0, 0, 0, 0.75);
-                            background: var(--bg-color);
-                        }
+                display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr);
+                width: 100%; max-width: var(--board-size); aspect-ratio: 1 / 1;
+                border: none; border-radius: 12px; overflow: hidden;
+                box-shadow: 15px 15px 35px rgba(0, 0, 0, 0.75);
+                background: var(--bg-color);
+            }
 
             .square { display: flex; align-items: center; justify-content: center; position: relative; }
-                    .light { background-color: var(--light-sq); }
-                    .dark { background-color: var(--dark-sq); }
-                    .piece { width: 85%; height: 85%; pointer-events: none; filter: drop-shadow(3px 4px 4px rgba(0,0,0,0.4)); }
+            .light { background-color: var(--light-sq); }
+            .dark { background-color: var(--dark-sq); }
+            .piece { width: 85%; height: 85%; pointer-events: none; filter: drop-shadow(3px 4px 4px rgba(0,0,0,0.4)); }
             .rotate-piece { transform: rotate(180deg); }
             .selected { background-color: var(--selected) !important; box-shadow: inset 2px 2px 8px rgba(0,0,0,0.3) !important; }
             .possible-move::after { content: ''; position: absolute; width: 30%; height: 30%; background-color: var(--highlight); border-radius: 50%; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.5); }
