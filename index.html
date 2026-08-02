@@ -262,15 +262,23 @@
         };
 
         window.startOffline = () => {
-            document.getElementById('menu-panel').classList.add('hidden');
-            document.getElementById('game-screen').style.display = 'flex';
-            currentMode = 'offline';
-            myColor = 'w';
-            statusBanner.innerText = "Pass & Play (Offline)";
-            renderBoard();
-        };
+                    document.getElementById('menu-panel').classList.add('hidden');
+                    document.getElementById('game-screen').style.display = 'flex';
+                    currentMode = 'offline';
+                    myColor = 'w';
+                    statusBanner.innerText = "Pass & Play (Offline)";
+                    renderBoard();
+                };
 
-        // --- Join Logic ---
+                window.leaveMatch = async () => {
+                    if (currentMode !== 'offline' && roomId) {
+                        // Remove player from the match to trigger "Opponent disconnected!" for the other player
+                        await set(ref(db, 'games/' + roomId + '/players/' + myColor), null);
+                    }
+                    window.location.reload();
+                };
+
+                // --- Join Logic ---
         document.getElementById('btn-join-submit').addEventListener('click', async () => {
             const code = document.getElementById('input-room-code').value.trim();
             const errorText = document.getElementById('join-error');
