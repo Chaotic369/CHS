@@ -210,15 +210,15 @@
                                                         return;
                                                     }
 
-                                                    // Toggle play/pause ONLY when clicking outside the board/UI entirely
-                                                    const isUI = e.target.closest('.panel, #board, .btn, input, #status-banner, #game-screen > div');
-                                                    if (!isUI) {
-                                                        if (bgMusic.paused) {
-                                                            bgMusic.play().catch(err => console.warn("Audio play failed:", err));
-                                                        } else {
-                                                            bgMusic.pause();
-                                                        }
-                                                    }
+                                                    // Toggle play/pause ONLY when clicking the raw backdrop (video or body itself, nothing else)
+                                                                                                        const isBackdrop = e.target === document.body || e.target.id === 'intro-video';
+                                                                                                        if (isBackdrop) {
+                                                                                                            if (bgMusic.paused) {
+                                                                                                                bgMusic.play().catch(err => console.warn("Audio play failed:", err));
+                                                                                                            } else {
+                                                                                                                bgMusic.pause();
+                                                                                                            }
+                                                                                                        }
                                                 });
 
                         // SHIM: Prevents errors when game starts and tries to .pause() the old video ID
