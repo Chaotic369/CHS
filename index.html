@@ -69,6 +69,9 @@
                                                                 border-radius: 20px;
                                                                                             padding: 30px 20px;
                                                                                             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+                                                                                            will-change: transform, opacity;
+                                                                                            transform: translate3d(0, 0, 0);
+                                                                                            backface-visibility: hidden;
                                                                                         }
 
             h2 { margin: 0 0 10px 0; text-align: center; font-size: 18px; color: var(--text-main); }
@@ -136,19 +139,22 @@
             #status-banner.active { color: var(--success); }
 
             #board {
-                            display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr);
-                            width: 100%; max-width: var(--board-size); aspect-ratio: 1 / 1;
-                            border: none; border-radius: 12px; overflow: hidden;
-                            box-shadow: 15px 15px 35px rgba(0, 0, 0, 0.75);
-                            background: var(--bg-color);
-                            animation: menuPopIn 1s ease-out;
-                        }
+                                        display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr);
+                                        width: 100%; max-width: var(--board-size); aspect-ratio: 1 / 1;
+                                        border: none; border-radius: 12px; overflow: hidden;
+                                        box-shadow: 15px 15px 35px rgba(0, 0, 0, 0.75);
+                                        background: var(--bg-color);
+                                        animation: menuPopIn 1s ease-out;
+                                        will-change: transform;
+                                        transform: translateZ(0);
+                                        backface-visibility: hidden;
+                                    }
 
-            .square { display: flex; align-items: center; justify-content: center; position: relative; }
-            .light { background-color: var(--light-sq); }
-            .dark { background-color: var(--dark-sq); }
-            .piece { width: 85%; height: 85%; pointer-events: none; filter: drop-shadow(3px 4px 4px rgba(0,0,0,0.4)); }
-            .rotate-piece { transform: rotate(180deg); }
+                        .square { display: flex; align-items: center; justify-content: center; position: relative; }
+                        .light { background-color: var(--light-sq); }
+                        .dark { background-color: var(--dark-sq); }
+                        .piece { width: 85%; height: 85%; pointer-events: none; filter: drop-shadow(3px 4px 4px rgba(0,0,0,0.4)); will-change: transform; transform: translateZ(0); backface-visibility: hidden; }
+                        .rotate-piece { transform: rotate(180deg) translateZ(0); }
             .selected { background-color: var(--selected) !important; box-shadow: inset 2px 2px 8px rgba(0,0,0,0.3) !important; }
             .possible-move::after { content: ''; position: absolute; width: 30%; height: 30%; background-color: var(--highlight); border-radius: 50%; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.5); }
             .capture-target { background-image: radial-gradient(circle, rgba(250, 65, 45, 0.6) 15%, transparent 75%) !important; }
@@ -174,7 +180,7 @@
 <body>
 
     <!-- Background Intro Video -->
-        <video id="intro-video" autoplay loop muted playsinline style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; opacity: 0.8; filter: blur(3px);">
+        <video id="intro-video" autoplay loop muted playsinline style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; opacity: 0.8; filter: blur(3px); transform: translateZ(0); will-change: filter, transform;">
             <source id="intro-source" src="intro.mp4" type="video/mp4">
         </video>
         <script>
@@ -580,8 +586,8 @@
                     }
 
                     // Apply rotation only to the board if needed (never in offline mode)
-                                if (flipBoard) boardEl.style.transform = 'rotate(180deg)';
-                                else boardEl.style.transform = 'none';
+                                                    if (flipBoard) boardEl.style.transform = 'rotate(180deg) translateZ(0)';
+                                                    else boardEl.style.transform = 'translateZ(0)';
 
                                 const restartBtn = document.getElementById('btn-restart');
                                                                             const leaveBtn = document.getElementById('btn-leave');
