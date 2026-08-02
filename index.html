@@ -451,9 +451,10 @@
                                                                                                                                                 };
 
                                                                                                 window.undoMove = () => {
-                                                                                                    if (currentMode !== 'offline') return;
-                                                                                                    if (game.history().length === 0) return;
-                                                                                                    game.undo();
+                                                                                                                                                                                                    if (currentMode !== 'offline') return;
+                                                                                                                                                                                                    if (game.history().length === 0) return;
+                                                                                                                                                                                                    game.undo();
+                                                                                                                                                                                                    sounds.move.play().catch(()=>{});
                                                                                                     selectedSquare = null;
                                                                                                     possibleMoves = [];
                                                                                                     renderBoard();
