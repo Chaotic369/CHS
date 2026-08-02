@@ -194,8 +194,14 @@
         const db = getDatabase(app);
 
         // State
-        const game = new Chess();
-        let currentMode = null; // 'offline', 'host', 'client'
+                const game = new Chess();
+                const sounds = {
+                    move: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-self.mp3'),
+                    capture: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/capture.mp3'),
+                    check: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-check.mp3'),
+                    end: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/game-end.mp3')
+                };
+                let currentMode = null; // 'offline', 'host', 'client'
         let roomId = null;
         let myColor = 'w';
         let selectedSquare = null;
@@ -317,16 +323,22 @@
         });
 
         // --- Game Sync ---
-        function setupGameSync() {
-            onValue(ref(db, 'games/' + roomId + '/fen'), (snapshot) => {
-                const serverFen = snapshot.val();
-                if (serverFen && serverFen !== game.fen()) {
-                    game.load(serverFen);
-                    selectedSquare = null;
-                    possibleMoves = [];
-                    renderBoard();
-                }
-            });
+                function setupGameSync() {
+                    onValue(ref(db, 'games/' + roomId + '/fen'), (snapshot) => {
+                        const serverFen = snapshot.val();
+                        if (serverFen && serverFen !== game.fen()) {
+                            game.load(serverFen);
+                    
+                            // Play opponent sound
+                            if (game.game_over()) sounds.end.play().catch(()=>{});
+                            else if (game.in_check()) sounds.check.play().catch(()=>{});
+                            else sounds.move.play().catch(()=>{});
+
+                            selectedSquare = null;
+                            possibleMoves = [];
+                            renderBoard();
+                        }
+                    });
 
             onValue(ref(db, 'games/' + roomId + '/players'), (snapshot) => {
                 const p = snapshot.val() || {};
