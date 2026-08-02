@@ -188,12 +188,9 @@
                         </audio>
                         <script>
                                                 const bgMusic = document.getElementById('bg-music');
-                                                const introImg = document.getElementById('intro-video');
-                        
-                                                // CACHE BUSTER: Force browser to load the newest video bypassing cache
-                                                introImg.src = 'intro.mp4?t=' + new Date().getTime();
+                                                                                                const introImg = document.getElementById('intro-video');
 
-                                            let audioStarted = false;
+                                                                                            let audioStarted = false;
             
                         // Attempt to autoplay immediately
                         bgMusic.volume = 0.2;
