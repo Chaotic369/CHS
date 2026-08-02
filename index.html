@@ -165,9 +165,13 @@
 
             /* Animation keyframes */
                         @keyframes panelIn {
-                            from { opacity: 0; transform: translateY(12px) scale(0.98); }
-                            to { opacity: 1; transform: translateY(0) scale(1); }
-                        }
+                                        from { opacity: 0; transform: translateY(12px) scale(0.98); }
+                                        to { opacity: 1; transform: translateY(0) scale(1); }
+                                    }
+                                    @keyframes menuPopIn {
+                                        from { opacity: 0; }
+                                        to { opacity: 1; }
+                                    }
                         @keyframes pieceIn {
                             from { opacity: 0; transform: scale(0.7); }
                             to { opacity: 1; transform: scale(1); }
@@ -197,7 +201,7 @@
 
     <div id="local-warning">WARNING: You opened this as a local file. Multiplayer database connections will be blocked by your browser. Please use a local web server (like VS Code Live Server).</div>
 
-    <div id="menu-panel" class="panel">
+    <div id="menu-panel" class="panel" style="animation: menuPopIn 1.1s ease-out;">
                     <div style="display: flex; gap: 25px; justify-content: center;">
                         <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
                         <button class="btn btn-primary" onclick="showCreateRoom()" title="Create Match">
