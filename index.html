@@ -169,7 +169,7 @@
         <div id="status-banner">Waiting for Match...</div>
         <div id="board"></div>
                 <div style="display: flex; gap: 10px; width: 100%; max-width: var(--board-size); margin-top: 15px;">
-                                    <button class="btn btn-danger" onclick="leaveMatch()">Leave Match</button>
+                                    <button id="btn-leave" class="btn btn-danger" onclick="leaveMatch()">Leave Match</button>
                                     <button id="btn-restart" class="btn btn-primary hidden" onclick="restartMatch()">Rematch</button>
                                 </div>
                             </div>
@@ -405,18 +405,21 @@
                                 else boardEl.style.transform = 'none';
 
                                 const restartBtn = document.getElementById('btn-restart');
-                                if (game.game_over()) {
-                                    statusBanner.innerText = "Game Over!";
-                                    statusBanner.classList.remove('active');
-                                    if (restartBtn) restartBtn.classList.remove('hidden');
-                                } else {
-                                    if (restartBtn) restartBtn.classList.add('hidden');
-                                    // Restore status banner text if it was game over
-                                    if (statusBanner.innerText === "Game Over!") {
-                                        statusBanner.innerText = currentMode === 'offline' ? "Pass & Play (Offline)" : `You are ${myColor === 'w' ? 'White' : 'Black'}`;
-                                        statusBanner.classList.add('active');
-                                    }
-                                }
+                                            const leaveBtn = document.getElementById('btn-leave');
+                                            if (game.game_over()) {
+                                                statusBanner.innerText = "Game Over!";
+                                                statusBanner.classList.remove('active');
+                                                if (restartBtn) restartBtn.classList.remove('hidden');
+                                                if (leaveBtn) leaveBtn.classList.add('hidden');
+                                            } else {
+                                                if (restartBtn) restartBtn.classList.add('hidden');
+                                                if (leaveBtn) leaveBtn.classList.remove('hidden');
+                                                // Restore status banner text if it was game over
+                                                if (statusBanner.innerText === "Game Over!") {
+                                                    statusBanner.innerText = currentMode === 'offline' ? "Pass & Play (Offline)" : `You are ${myColor === 'w' ? 'White' : 'Black'}`;
+                                                    statusBanner.classList.add('active');
+                                                }
+                                            }
                             }
 
         function handleSquareClick(sqId) {
