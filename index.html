@@ -225,10 +225,12 @@
                         });
 
                         // SHIM: Prevents errors when game starts and tries to .pause() the old video ID
-                        introImg.pause = function() {
-                            bgMusic.pause();
-                        };
-                    </script>
+                                                const nativePause = introImg.pause.bind(introImg);
+                                                introImg.pause = function() {
+                                                    nativePause();
+                                                    bgMusic.pause();
+                                                };
+                                            </script>
 
     <div id="local-warning">WARNING: You opened this as a local file. Multiplayer database connections will be blocked by your browser. Please use a local web server (like VS Code Live Server).</div>
 
