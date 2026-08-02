@@ -346,10 +346,11 @@
                                                                                                                         document.getElementById('intro-video').pause();
                                                                                                                                             statusBanner.innerText = "";
                                                                                                             statusBanner.classList.remove('active');
-                                                                setupGameSync();
-                                renderBoard();
-                            }
-                        });
+                                                                                        setupGameSync();
+                                                        playSwooshSound();
+                                                        renderBoard();
+                                                    }
+                                                });
                     } catch (err) {
                         console.error("Firebase error:", err);
                         alert("Failed to create match: " + err.message + "\n\n(Check if your Firebase Database rules expired!)");
@@ -381,12 +382,13 @@
                                                                     document.getElementById('intro-video').style.display = 'none';
                                                                     document.getElementById('intro-video').pause();
                                                     currentMode = 'offline';
-                                    myColor = 'w';
-                                    statusBanner.innerText = "";
-                                    statusBanner.classList.remove('active');
-                                    document.getElementById('btn-undo').classList.remove('hidden');
-                                    renderBoard();
-                                };
+                                            myColor = 'w';
+                                            statusBanner.innerText = "";
+                                            statusBanner.classList.remove('active');
+                                            document.getElementById('btn-undo').classList.remove('hidden');
+                                            playSwooshSound();
+                                            renderBoard();
+                                        };
 
                 window.leaveMatch = async () => {
                                                             if (!confirm("Are you sure you want to resign and leave the match?")) return;
@@ -487,16 +489,17 @@
                                                                 onDisconnect(playerBRef).remove();
 
                                                                 document.getElementById('join-panel').classList.add('hidden');
-                                                                                                                                document.getElementById('game-screen').style.display = 'flex';
-                                                                                                                                document.getElementById('intro-video').style.display = 'none';
-                                                                                                                                document.getElementById('intro-video').pause();
-                                                                                                                                            statusBanner.innerText = "";
-                                                                                                            statusBanner.classList.remove('active');
+                                                                                                                                                                document.getElementById('game-screen').style.display = 'flex';
+                                                                                                                                                                document.getElementById('intro-video').style.display = 'none';
+                                                                                                                                                                document.getElementById('intro-video').pause();
+                                                                                                                                                                            statusBanner.innerText = "";
+                                                                                                                                            statusBanner.classList.remove('active');
                 
-                                                                game.load(snapshot.val().fen);
-                                setupGameSync();
-                                renderBoard();
-                            } catch (err) {
+                                                                                                                                game.load(snapshot.val().fen);
+                                                                                                setupGameSync();
+                                                                                                playSwooshSound();
+                                                                                                renderBoard();
+                                                                                            } catch (err) {
                                                             console.error("Firebase error:", err);
                                                             errorText.innerText = "Connection failed: " + err.message;
                                                             errorText.style.display = 'block';
@@ -651,19 +654,59 @@
                     }
 
                     // --- Custom UI Click Sound ---
-                            const btnAudio = new Audio('button.mp3');
-                            const playBtnSound = () => {
-                                try {
-                                    // Clone the node so rapid clicks overlap correctly instead of cutting off
-                                    btnAudio.cloneNode(true).play().catch(()=>{});
-                                } catch (e) {}
-                            };
+                                                const btnAudio = new Audio('button.mp3');
+                                                function playBtnSound() {
+                                                    try {
+                                                        // Clone the node so rapid clicks overlap correctly instead of cutting off
+                                                        btnAudio.cloneNode(true).play().catch(()=>{});
+                                                    } catch (e) {}
+                                                }
 
-                    document.addEventListener('click', (e) => {
-                        if (e.target.closest('.btn')) {
-                            playBtnSound();
-                        }
-                    });
+                                                let uiAudioCtx;
+                                                function playSwooshSound() {
+                                                    try {
+                                                        if (!uiAudioCtx) {
+                                                            const AudioContext = window.AudioContext || window.webkitAudioContext;
+                                                            if (!AudioContext) return;
+                                                            uiAudioCtx = new AudioContext();
+                                                        }
+                                                        const ctx = uiAudioCtx;
+                                                        if (ctx.state === 'suspended') ctx.resume();
+                
+                                                        const bufferSize = ctx.sampleRate * 0.25;
+                                                        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                                                        const data = buffer.getChannelData(0);
+                                                        for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+                
+                                                        const noise = ctx.createBufferSource();
+                                                        noise.buffer = buffer;
+                
+                                                        const filter = ctx.createBiquadFilter();
+                                                        filter.type = 'bandpass';
+                                                        filter.frequency.setValueAtTime(400, ctx.currentTime);
+                                                        filter.frequency.exponentialRampToValueAtTime(3500, ctx.currentTime + 0.2);
+                
+                                                        const gain = ctx.createGain();
+                                                        gain.gain.setValueAtTime(0, ctx.currentTime);
+                                                        gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05);
+                                                        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+                
+                                                        noise.connect(filter);
+                                                        filter.connect(gain);
+                                                        gain.connect(ctx.destination);
+                
+                                                        noise.start();
+                                                    } catch (e) {}
+                                                }
+
+                            document.addEventListener('click', (e) => {
+                                const btn = e.target.closest('.btn');
+                                if (btn) {
+                                    // The offline button triggers the swoosh instead of the standard click
+                                    if (btn.getAttribute('onclick') === 'startOffline()') return;
+                                    playBtnSound();
+                                }
+                            });
                 </script>
 </body>
 </html>
