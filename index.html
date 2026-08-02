@@ -124,7 +124,7 @@
             }
 
             /* --- Game Screen --- */
-            #game-screen { display: none; flex-direction: column; align-items: center; width: 100%; }
+            #game-screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100vh; position: absolute; top: 0; left: 0; }
 
             #status-banner {
                             width: 100%; max-width: var(--board-size);
@@ -221,23 +221,16 @@
         </div>
 
     <div id="game-screen">
-            <div id="status-banner">Waiting for Match...</div>
-            <div style="display: flex; gap: 15px; width: 100%; justify-content: center; max-width: var(--board-size); margin-bottom: 15px;">
-                <button id="btn-leave" class="btn" style="background: transparent; border: none; color: var(--danger); width: auto; height: auto; padding: 0;" onclick="leaveMatch()" title="Leave Match"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
-                <button id="btn-undo" class="btn hidden" style="width: auto; height: auto; background: transparent; border: none; padding: 0;" onclick="undoMove()" title="Undo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg></button>
-            </div>
-            <div id="board"></div>
-                    <div style="display: flex; gap: 15px; width: 100%; justify-content: center; max-width: var(--board-size); margin-top: 15px;">
-                                                                                        <button id="btn-restart" class="btn btn-primary hidden" onclick="restartMatch()">Rematch</button>
-                                                                                                                        </div>
-                                </div>
-        <div id="board"></div>
-                <div style="display: flex; gap: 15px; width: 100%; justify-content: center; max-width: var(--board-size); margin-top: 15px;">
-                                                                                    <button id="btn-leave" class="btn" style="background: transparent; border: none; color: var(--danger); width: auto; height: auto; padding: 0;" onclick="leaveMatch()" title="Leave Match"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg></button>
-                                                                                                                                        <button id="btn-undo" class="btn hidden" style="width: auto; height: auto; background: transparent; border: none; padding: 0;" onclick="undoMove()" title="Undo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg></button>
-                                                                                                                                        <button id="btn-restart" class="btn btn-primary hidden" onclick="restartMatch()">Rematch</button>
-                                                                                                                                    </div>
-                            </div>
+                <div id="status-banner">Waiting for Match...</div>
+                <div style="display: flex; gap: 15px; width: 100%; justify-content: center; max-width: var(--board-size); margin-bottom: 15px;">
+                    <button id="btn-leave" class="btn" style="background: transparent; border: none; color: var(--danger); width: auto; height: auto; padding: 0;" onclick="leaveMatch()" title="Leave Match"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
+                    <button id="btn-undo" class="btn hidden" style="width: auto; height: auto; background: transparent; border: none; padding: 0;" onclick="undoMove()" title="Undo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg></button>
+                </div>
+                <div id="board"></div>
+                        <div style="display: flex; gap: 15px; width: 100%; justify-content: center; max-width: var(--board-size); margin-top: 15px;">
+                                                                                            <button id="btn-restart" class="btn btn-primary hidden" onclick="restartMatch()">Rematch</button>
+                                                                                                                            </div>
+                                    </div>
 
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
     
