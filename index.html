@@ -320,16 +320,18 @@
                                                         };
 
                                                 window.restartMatch = () => {
-                                                    game.reset();
-                                                    selectedSquare = null;
-                                                    possibleMoves = [];
-                    
-                                                    if (currentMode !== 'offline' && roomId) {
-                                                        set(ref(db, 'games/' + roomId + '/fen'), game.fen()).catch(err => console.error(err));
-                                                    }
-                    
-                                                    renderBoard();
-                                                };
+                                                                                                    if (currentMode !== 'offline' && roomId) {
+                                                                                                        // Let the database sync handle the reset and color swap for both players
+                                                                                                        const startFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+                                                                                                        set(ref(db, 'games/' + roomId + '/fen'), startFen).catch(err => console.error(err));
+                                                                                                    } else {
+                                                                                                        game.reset();
+                                                                                                        selectedSquare = null;
+                                                                                                        possibleMoves = [];
+                                                                                                        myColor = myColor === 'w' ? 'b' : 'w';
+                                                                                                        renderBoard();
+                                                                                                    }
+                                                                                                };
 
                 // --- Join Logic ---
                                         document.getElementById('btn-join-submit').addEventListener('click', async () => {
