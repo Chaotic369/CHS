@@ -211,9 +211,9 @@
                                                     }
 
                                                     // Toggle play/pause ONLY when clicking the raw backdrop (video or body itself, nothing else)
-                                                                                                        const isBackdrop = e.target === document.body || e.target.id === 'intro-video';
-                                                                                                        if (isBackdrop) {
-                                                                                                            if (bgMusic.paused) {
+                                                                                                                                                            const isBackdrop = e.target === document.body || e.target.id === 'intro-video' || e.target.id === 'game-screen';
+                                                                                                                                                            if (isBackdrop) {
+                                                                                                                                                                if (bgMusic.paused) {
                                                                                                                 bgMusic.play().catch(err => console.warn("Audio play failed:", err));
                                                                                                             } else {
                                                                                                                 bgMusic.pause();
