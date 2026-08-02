@@ -237,10 +237,9 @@
 
         // --- UI Navigation Methods (Exposed to window for HTML buttons) ---
         
-                window.showCreateRoom = async () => {
-                            if (!db) return alert("Multiplayer is currently unavailable. Please check your internet connection or adblocker.");
+                        window.showCreateRoom = async () => {
                             document.getElementById('menu-panel').classList.add('hidden');
-                    document.getElementById('create-panel').classList.remove('hidden');
+                            document.getElementById('create-panel').classList.remove('hidden');
             
                     // Generate a random 4 digit code
                     const code = Math.floor(1000 + Math.random() * 9000).toString();
