@@ -313,11 +313,11 @@
                         onValue(ref(db, 'games/' + roomId + '/players/b'), (snapshot) => {
                             if (snapshot.val()) {
                                 // Player 2 joined! Start the game.
-                                document.getElementById('create-panel').classList.add('hidden');
-                                document.getElementById('game-screen').style.display = 'flex';
-                                                    statusBanner.innerText = "You are White";
-                                                    statusBanner.classList.add('active');
-                                setupGameSync();
+                                                                document.getElementById('create-panel').classList.add('hidden');
+                                                                document.getElementById('game-screen').style.display = 'flex';
+                                                                                    statusBanner.innerText = "";
+                                                                                    statusBanner.classList.remove('active');
+                                                                setupGameSync();
                                 renderBoard();
                             }
                         });
@@ -346,15 +346,16 @@
                 };
 
         window.startOffline = () => {
-                                            if (!game) return alert("Game engine failed to load. Please check your internet connection.");
-                                            document.getElementById('menu-panel').classList.add('hidden');
-                                            document.getElementById('game-screen').style.display = 'flex';
-                            currentMode = 'offline';
-                            myColor = 'w';
-                            statusBanner.innerText = "Pass & Play (Offline)";
-                            document.getElementById('btn-undo').classList.remove('hidden');
-                            renderBoard();
-                        };
+                                                    if (!game) return alert("Game engine failed to load. Please check your internet connection.");
+                                                    document.getElementById('menu-panel').classList.add('hidden');
+                                                    document.getElementById('game-screen').style.display = 'flex';
+                                    currentMode = 'offline';
+                                    myColor = 'w';
+                                    statusBanner.innerText = "";
+                                    statusBanner.classList.remove('active');
+                                    document.getElementById('btn-undo').classList.remove('hidden');
+                                    renderBoard();
+                                };
 
                 window.leaveMatch = async () => {
                                                             if (!confirm("Are you sure you want to resign and leave the match?")) return;
@@ -428,11 +429,11 @@
                                 onDisconnect(playerBRef).remove();
 
                                 document.getElementById('join-panel').classList.add('hidden');
-                                document.getElementById('game-screen').style.display = 'flex';
-                                            statusBanner.innerText = "You are Black";
-                                            statusBanner.classList.add('active');
+                                                                document.getElementById('game-screen').style.display = 'flex';
+                                                                            statusBanner.innerText = "";
+                                                                            statusBanner.classList.remove('active');
                 
-                                game.load(snapshot.val().fen);
+                                                                game.load(snapshot.val().fen);
                                 setupGameSync();
                                 renderBoard();
                             } catch (err) {
@@ -466,15 +467,15 @@
                             });
 
             onValue(ref(db, 'games/' + roomId + '/players'), (snapshot) => {
-                const p = snapshot.val() || {};
-                if (!p.w || !p.b) {
-                    statusBanner.innerText = "Opponent disconnected!";
-                    statusBanner.classList.remove('active');
-                } else {
-                                    statusBanner.innerText = `You are ${myColor === 'w' ? 'White' : 'Black'}`;
-                                    statusBanner.classList.add('active');
-                                }
-            });
+                            const p = snapshot.val() || {};
+                            if (!p.w || !p.b) {
+                                statusBanner.innerText = "Opponent disconnected!";
+                                statusBanner.classList.remove('active');
+                            } else {
+                                                statusBanner.innerText = "";
+                                                statusBanner.classList.remove('active');
+                                            }
+                        });
         }
 
         // --- Rendering & Game Mechanics ---
@@ -549,10 +550,10 @@
                                                                                     }
                                                                                 }
                                                                                 // Restore status banner text if it was game over
-                                                                                if (statusBanner.innerText === "Game Over!") {
-                                                                                    statusBanner.innerText = currentMode === 'offline' ? "Pass & Play (Offline)" : `You are ${myColor === 'w' ? 'White' : 'Black'}`;
-                                                                                    statusBanner.classList.add('active');
-                                                                                }
+                                                                                                                                                                if (statusBanner.innerText === "Game Over!") {
+                                                                                                                                                                    statusBanner.innerText = "";
+                                                                                                                                                                    statusBanner.classList.remove('active');
+                                                                                                                                                                }
                                                                             }
                                                             }
 
