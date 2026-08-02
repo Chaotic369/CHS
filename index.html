@@ -24,6 +24,13 @@
 
             body {
                 background-color: var(--bg-color);
+                background-image: 
+                    linear-gradient(45deg, #111 25%, transparent 25%), 
+                    linear-gradient(-45deg, #111 25%, transparent 25%), 
+                    linear-gradient(45deg, transparent 75%, #111 75%), 
+                    linear-gradient(-45deg, transparent 75%, #111 75%);
+                background-size: 60px 60px;
+                background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
                 color: var(--text-main);
                 font-family: 'Segoe UI', Tahoma, sans-serif;
                 font-size: 13px;
@@ -53,18 +60,23 @@
             }
 
             /* --- UI Panels --- */
-            .panel {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-                width: 85%;
-                max-width: 320px;
-                position: absolute;
-                z-index: 100;
-                background: transparent;
-                padding: 25px 20px;
-            }
+                        .panel {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            gap: 15px;
+                            width: 85%;
+                            max-width: 320px;
+                            position: absolute;
+                            z-index: 100;
+                            background: rgba(0, 0, 0, 0.75);
+                            backdrop-filter: blur(16px);
+                            -webkit-backdrop-filter: blur(16px);
+                            border: 1px solid rgba(255, 255, 255, 0.12);
+                            border-radius: 20px;
+                            padding: 30px 20px;
+                            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+                        }
 
             h2 { margin: 0 0 10px 0; text-align: center; font-size: 18px; color: var(--text-main); }
 
@@ -153,6 +165,18 @@
         </style>
 </head>
 <body>
+
+    <!-- Faded Blurred Chess Board Background Overlay -->
+    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); opacity: 0.12; filter: blur(25px); transform: scale(1.1); pointer-events: none;">
+        <div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div>
+        <div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div>
+        <div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div>
+        <div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div>
+        <div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div>
+        <div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div>
+        <div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div>
+        <div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div><div style="background: #739552;"></div><div style="background: #ebecd0;"></div>
+    </div>
 
     <div id="local-warning">WARNING: You opened this as a local file. Multiplayer database connections will be blocked by your browser. Please use a local web server (like VS Code Live Server).</div>
 
