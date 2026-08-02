@@ -170,6 +170,7 @@
         <div id="board"></div>
                 <div style="display: flex; gap: 10px; width: 100%; max-width: var(--board-size); margin-top: 15px;">
                                     <button class="btn btn-danger" onclick="leaveMatch()">Leave Match</button>
+                                    <button id="btn-restart" class="btn btn-primary hidden" onclick="restartMatch()">Rematch</button>
                                 </div>
                             </div>
 
@@ -276,14 +277,26 @@
                 };
 
                 window.leaveMatch = async () => {
-                            if (!confirm("Are you sure you want to resign and leave the match?")) return;
+                                            if (!confirm("Are you sure you want to resign and leave the match?")) return;
             
-                            if (currentMode !== 'offline' && roomId) {
-                                // Remove player from the match to trigger "Opponent disconnected!" for the other player
-                                await set(ref(db, 'games/' + roomId + '/players/' + myColor), null);
-                            }
-                            window.location.reload();
-                        };
+                                            if (currentMode !== 'offline' && roomId) {
+                                                // Remove player from the match to trigger "Opponent disconnected!" for the other player
+                                                await set(ref(db, 'games/' + roomId + '/players/' + myColor), null);
+                                            }
+                                            window.location.reload();
+                                        };
+
+                                window.restartMatch = () => {
+                                    game.reset();
+                                    selectedSquare = null;
+                                    possibleMoves = [];
+                    
+                                    if (currentMode !== 'offline' && roomId) {
+                                        set(ref(db, 'games/' + roomId + '/fen'), game.fen());
+                                    }
+                    
+                                    renderBoard();
+                                };
 
                 // --- Join Logic ---
         document.getElementById('btn-join-submit').addEventListener('click', async () => {
@@ -388,14 +401,23 @@
                     }
 
                     // Apply rotation only to the board if needed (never in offline mode)
-                    if (flipBoard) boardEl.style.transform = 'rotate(180deg)';
-                    else boardEl.style.transform = 'none';
+                                if (flipBoard) boardEl.style.transform = 'rotate(180deg)';
+                                else boardEl.style.transform = 'none';
 
-                    if (game.game_over()) {
-                statusBanner.innerText = "Game Over!";
-                statusBanner.classList.remove('active');
-            }
-        }
+                                const restartBtn = document.getElementById('btn-restart');
+                                if (game.game_over()) {
+                                    statusBanner.innerText = "Game Over!";
+                                    statusBanner.classList.remove('active');
+                                    if (restartBtn) restartBtn.classList.remove('hidden');
+                                } else {
+                                    if (restartBtn) restartBtn.classList.add('hidden');
+                                    // Restore status banner text if it was game over
+                                    if (statusBanner.innerText === "Game Over!") {
+                                        statusBanner.innerText = currentMode === 'offline' ? "Pass & Play (Offline)" : `You are ${myColor === 'w' ? 'White' : 'Black'}`;
+                                        statusBanner.classList.add('active');
+                                    }
+                                }
+                            }
 
         function handleSquareClick(sqId) {
                     if (game.game_over()) return;
