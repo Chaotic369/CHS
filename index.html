@@ -217,57 +217,63 @@
         // --- UI Navigation Methods (Exposed to window for HTML buttons) ---
         
         window.showCreateRoom = async () => {
-            document.getElementById('menu-panel').classList.add('hidden');
-            document.getElementById('create-panel').classList.remove('hidden');
+                    document.getElementById('menu-panel').classList.add('hidden');
+                    document.getElementById('create-panel').classList.remove('hidden');
             
-            // Generate a random 4 digit code
-            const code = Math.floor(1000 + Math.random() * 9000).toString();
-            roomId = code;
-            myColor = 'w'; // Creator is ALWAYS White
-            currentMode = 'host';
+                    // Generate a random 4 digit code
+                    const code = Math.floor(1000 + Math.random() * 9000).toString();
+                    roomId = code;
+                    myColor = 'w'; // Creator is ALWAYS White
+                    currentMode = 'host';
 
-            document.getElementById('display-room-code').innerText = code;
+                    document.getElementById('display-room-code').innerText = code;
 
-            // Setup database room
-            const roomRef = ref(db, 'games/' + roomId);
-            await set(roomRef, {
-                fen: game.fen(),
-                players: { w: true }
-            });
+                    // Setup database room
+                    const roomRef = ref(db, 'games/' + roomId);
+                    try {
+                        await set(roomRef, {
+                            fen: game.fen(),
+                            players: { w: true }
+                        });
 
-            // Cleanup if they close tab
-            onDisconnect(ref(db, 'games/' + roomId + '/players/w')).remove();
+                        // Cleanup if they close tab
+                        onDisconnect(ref(db, 'games/' + roomId + '/players/w')).remove();
 
-            // Listen for Player 2 joining
-            onValue(ref(db, 'games/' + roomId + '/players/b'), (snapshot) => {
-                if (snapshot.val()) {
-                    // Player 2 joined! Start the game.
+                        // Listen for Player 2 joining
+                        onValue(ref(db, 'games/' + roomId + '/players/b'), (snapshot) => {
+                            if (snapshot.val()) {
+                                // Player 2 joined! Start the game.
+                                document.getElementById('create-panel').classList.add('hidden');
+                                document.getElementById('game-screen').style.display = 'flex';
+                                                    statusBanner.innerText = "You are White";
+                                                    statusBanner.classList.add('active');
+                                setupGameSync();
+                                renderBoard();
+                            }
+                        });
+                    } catch (err) {
+                        console.error("Firebase error:", err);
+                        alert("Failed to create match: " + err.message + "\n\n(Check if your Firebase Database rules expired!)");
+                        cancelRoom();
+                    }
+                };
+
+                window.showJoinRoom = () => {
+                    document.getElementById('menu-panel').classList.add('hidden');
+                    document.getElementById('join-panel').classList.remove('hidden');
+                };
+
+                window.backToMenu = () => {
+                    document.getElementById('join-panel').classList.add('hidden');
+                    document.getElementById('menu-panel').classList.remove('hidden');
+                    document.getElementById('join-error').style.display = 'none';
+                };
+
+                window.cancelRoom = () => {
+                    if (roomId) set(ref(db, 'games/' + roomId), null).catch(err => console.error(err)); // Delete room safely
                     document.getElementById('create-panel').classList.add('hidden');
-                    document.getElementById('game-screen').style.display = 'flex';
-                                        statusBanner.innerText = "You are White";
-                                        statusBanner.classList.add('active');
-                    setupGameSync();
-                    renderBoard();
-                }
-            });
-        };
-
-        window.showJoinRoom = () => {
-            document.getElementById('menu-panel').classList.add('hidden');
-            document.getElementById('join-panel').classList.remove('hidden');
-        };
-
-        window.backToMenu = () => {
-            document.getElementById('join-panel').classList.add('hidden');
-            document.getElementById('menu-panel').classList.remove('hidden');
-            document.getElementById('join-error').style.display = 'none';
-        };
-
-        window.cancelRoom = () => {
-            if (roomId) set(ref(db, 'games/' + roomId), null); // Delete room
-            document.getElementById('create-panel').classList.add('hidden');
-            document.getElementById('menu-panel').classList.remove('hidden');
-        };
+                    document.getElementById('menu-panel').classList.remove('hidden');
+                };
 
         window.startOffline = () => {
                     document.getElementById('menu-panel').classList.add('hidden');
