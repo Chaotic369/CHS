@@ -285,26 +285,30 @@
                 };
 
                 window.leaveMatch = async () => {
-                                            if (!confirm("Are you sure you want to resign and leave the match?")) return;
+                                                            if (!confirm("Are you sure you want to resign and leave the match?")) return;
             
-                                            if (currentMode !== 'offline' && roomId) {
-                                                // Remove player from the match to trigger "Opponent disconnected!" for the other player
-                                                await set(ref(db, 'games/' + roomId + '/players/' + myColor), null);
-                                            }
-                                            window.location.reload();
-                                        };
+                                                            if (currentMode !== 'offline' && roomId) {
+                                                                // Remove player from the match to trigger "Opponent disconnected!" for the other player
+                                                                try {
+                                                                    await set(ref(db, 'games/' + roomId + '/players/' + myColor), null);
+                                                                } catch (err) {
+                                                                    console.error("Failed to update server:", err);
+                                                                }
+                                                            }
+                                                            window.location.reload();
+                                                        };
 
-                                window.restartMatch = () => {
-                                    game.reset();
-                                    selectedSquare = null;
-                                    possibleMoves = [];
+                                                window.restartMatch = () => {
+                                                    game.reset();
+                                                    selectedSquare = null;
+                                                    possibleMoves = [];
                     
-                                    if (currentMode !== 'offline' && roomId) {
-                                        set(ref(db, 'games/' + roomId + '/fen'), game.fen());
-                                    }
+                                                    if (currentMode !== 'offline' && roomId) {
+                                                        set(ref(db, 'games/' + roomId + '/fen'), game.fen()).catch(err => console.error(err));
+                                                    }
                     
-                                    renderBoard();
-                                };
+                                                    renderBoard();
+                                                };
 
                 // --- Join Logic ---
         document.getElementById('btn-join-submit').addEventListener('click', async () => {
