@@ -344,36 +344,42 @@
                 function renderBoard() {
                     boardEl.innerHTML = '';
                     const boardData = game.board();
-                    const isFlipped = currentMode === 'offline' ? game.turn() === 'b' : myColor === 'b';
+            
+                    // The board only flips in online mode if you are Black
+                    const flipBoard = currentMode !== 'offline' && myColor === 'b';
+            
+                    // The pieces flip individually based on whose turn it is in Pass & Play
+                    const flipPieces = currentMode === 'offline' ? game.turn() === 'b' : flipBoard;
 
                     for (let r = 0; r < 8; r++) {
-                for (let c = 0; c < 8; c++) {
-                    const squareData = boardData[r][c];
-                    const sqId = String.fromCharCode(97 + c) + (8 - r);
+                        for (let c = 0; c < 8; c++) {
+                            const squareData = boardData[r][c];
+                            const sqId = String.fromCharCode(97 + c) + (8 - r);
                     
-                    const sqEl = document.createElement('div');
-                    sqEl.className = `square ${(r + c) % 2 === 0 ? 'light' : 'dark'}`;
-                    sqEl.id = sqId;
+                            const sqEl = document.createElement('div');
+                            sqEl.className = `square ${(r + c) % 2 === 0 ? 'light' : 'dark'}`;
+                            sqEl.id = sqId;
                     
-                    if (selectedSquare === sqId) sqEl.classList.add('selected');
-                    if (possibleMoves.some(m => m.to === sqId)) sqEl.classList.add('possible-move');
+                            if (selectedSquare === sqId) sqEl.classList.add('selected');
+                            if (possibleMoves.some(m => m.to === sqId)) sqEl.classList.add('possible-move');
 
-                    if (squareData) {
-                        const img = document.createElement('img');
-                                                img.src = `https://chessboardjs.com/img/chesspieces/wikipedia/${squareData.color}${squareData.type.toUpperCase()}.png`;
-                                                img.className = `piece ${isFlipped ? 'rotate-piece' : ''}`;
-                                                sqEl.appendChild(img);
+                            if (squareData) {
+                                const img = document.createElement('img');
+                                img.src = `https://chessboardjs.com/img/chesspieces/wikipedia/${squareData.color}${squareData.type.toUpperCase()}.png`;
+                                img.className = `piece ${flipPieces ? 'rotate-piece' : ''}`;
+                                sqEl.appendChild(img);
+                            }
+                    
+                            sqEl.addEventListener('click', () => handleSquareClick(sqId));
+                            boardEl.appendChild(sqEl);
+                        }
                     }
-                    
-                    sqEl.addEventListener('click', () => handleSquareClick(sqId));
-                    boardEl.appendChild(sqEl);
-                }
-            }
 
-            if (isFlipped) boardEl.style.transform = 'rotate(180deg)';
-            else boardEl.style.transform = 'none';
+                    // Apply rotation only to the board if needed (never in offline mode)
+                    if (flipBoard) boardEl.style.transform = 'rotate(180deg)';
+                    else boardEl.style.transform = 'none';
 
-            if (game.game_over()) {
+                    if (game.game_over()) {
                 statusBanner.innerText = "Game Over!";
                 statusBanner.classList.remove('active');
             }
