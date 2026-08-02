@@ -246,8 +246,8 @@
                     // Player 2 joined! Start the game.
                     document.getElementById('create-panel').classList.add('hidden');
                     document.getElementById('game-screen').style.display = 'flex';
-                    statusBanner.innerText = `Match Active! You are White.`;
-                    statusBanner.classList.add('active');
+                                        statusBanner.innerText = "You are White";
+                                        statusBanner.classList.add('active');
                     setupGameSync();
                     renderBoard();
                 }
@@ -319,8 +319,8 @@
 
             document.getElementById('join-panel').classList.add('hidden');
             document.getElementById('game-screen').style.display = 'flex';
-            statusBanner.innerText = `Match Active! You are Black.`;
-            statusBanner.classList.add('active');
+                        statusBanner.innerText = "You are Black";
+                        statusBanner.classList.add('active');
             
             game.load(snapshot.val().fen);
             setupGameSync();
@@ -345,9 +345,9 @@
                     statusBanner.innerText = "Opponent disconnected!";
                     statusBanner.classList.remove('active');
                 } else {
-                    statusBanner.innerText = `Match Active! You are ${myColor === 'w' ? 'White' : 'Black'}.`;
-                    statusBanner.classList.add('active');
-                }
+                                    statusBanner.innerText = `You are ${myColor === 'w' ? 'White' : 'Black'}`;
+                                    statusBanner.classList.add('active');
+                                }
             });
         }
 
