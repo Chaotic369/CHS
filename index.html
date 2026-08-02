@@ -185,9 +185,10 @@
             video.load();
 
             // 2. AUDIO FIX: Unmutes the video the moment the user clicks anywhere on the page
-            document.body.addEventListener('click', function unmuteVideo() {
-                video.muted = false;
-            }, { once: true });
+                        document.body.addEventListener('click', function unmuteVideo() {
+                            video.volume = 0.2; // Reduces background video volume to 20%
+                            video.muted = false;
+                        }, { once: true });
         </script>
 
     <div id="local-warning">WARNING: You opened this as a local file. Multiplayer database connections will be blocked by your browser. Please use a local web server (like VS Code Live Server).</div>
