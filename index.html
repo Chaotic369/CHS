@@ -248,8 +248,9 @@
 
         // --- UI Navigation Methods (Exposed to window for HTML buttons) ---
         
-        window.showCreateRoom = async () => {
-                    document.getElementById('menu-panel').classList.add('hidden');
+                window.showCreateRoom = async () => {
+                            if (!db) return alert("Multiplayer is currently unavailable. Please check your internet connection or adblocker.");
+                            document.getElementById('menu-panel').classList.add('hidden');
                     document.getElementById('create-panel').classList.remove('hidden');
             
                     // Generate a random 4 digit code
@@ -308,8 +309,9 @@
                 };
 
         window.startOffline = () => {
-                    document.getElementById('menu-panel').classList.add('hidden');
-                    document.getElementById('game-screen').style.display = 'flex';
+                            if (!game) return alert("Game engine failed to load. Please check your internet connection.");
+                            document.getElementById('menu-panel').classList.add('hidden');
+                            document.getElementById('game-screen').style.display = 'flex';
                     currentMode = 'offline';
                     myColor = 'w';
                     statusBanner.innerText = "Pass & Play (Offline)";
@@ -343,11 +345,17 @@
                                                 };
 
                 // --- Join Logic ---
-                        document.getElementById('btn-join-submit').addEventListener('click', async () => {
-                            const code = document.getElementById('input-room-code').value.trim();
-                            const errorText = document.getElementById('join-error');
+                                        document.getElementById('btn-join-submit').addEventListener('click', async () => {
+                                            const errorText = document.getElementById('join-error');
+                                            if (!db) {
+                                                errorText.innerText = "Multiplayer unavailable (Blocked or Offline).";
+                                                errorText.style.display = 'block';
+                                                return;
+                                            }
+                            
+                                            const code = document.getElementById('input-room-code').value.trim();
             
-                            if (code.length !== 4) {
+                                            if (code.length !== 4) {
                                 errorText.innerText = "Enter a 4-digit code.";
                                 errorText.style.display = 'block';
                                 return;
