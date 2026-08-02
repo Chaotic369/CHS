@@ -311,41 +311,47 @@
                                                 };
 
                 // --- Join Logic ---
-        document.getElementById('btn-join-submit').addEventListener('click', async () => {
-            const code = document.getElementById('input-room-code').value.trim();
-            const errorText = document.getElementById('join-error');
+                        document.getElementById('btn-join-submit').addEventListener('click', async () => {
+                            const code = document.getElementById('input-room-code').value.trim();
+                            const errorText = document.getElementById('join-error');
             
-            if (code.length !== 4) {
-                errorText.innerText = "Enter a 4-digit code.";
-                errorText.style.display = 'block';
-                return;
-            }
+                            if (code.length !== 4) {
+                                errorText.innerText = "Enter a 4-digit code.";
+                                errorText.style.display = 'block';
+                                return;
+                            }
 
-            const snapshot = await get(ref(db, 'games/' + code));
-            if (!snapshot.exists()) {
-                errorText.innerText = "Room not found or expired.";
-                errorText.style.display = 'block';
-                return;
-            }
+                            try {
+                                const snapshot = await get(ref(db, 'games/' + code));
+                                if (!snapshot.exists()) {
+                                    errorText.innerText = "Room not found or expired.";
+                                    errorText.style.display = 'block';
+                                    return;
+                                }
 
-            // Room exists. Join as Black.
-            roomId = code;
-            myColor = 'b';
-            currentMode = 'client';
-            
-            const playerBRef = ref(db, 'games/' + roomId + '/players/b');
-            await set(playerBRef, true);
-            onDisconnect(playerBRef).remove();
+                                // Room exists. Join as Black.
+                                roomId = code;
+                                myColor = 'b';
+                                currentMode = 'client';
+                
+                                const playerBRef = ref(db, 'games/' + roomId + '/players/b');
+                                await set(playerBRef, true);
+                                onDisconnect(playerBRef).remove();
 
-            document.getElementById('join-panel').classList.add('hidden');
-            document.getElementById('game-screen').style.display = 'flex';
-                        statusBanner.innerText = "You are Black";
-                        statusBanner.classList.add('active');
-            
-            game.load(snapshot.val().fen);
-            setupGameSync();
-            renderBoard();
-        });
+                                document.getElementById('join-panel').classList.add('hidden');
+                                document.getElementById('game-screen').style.display = 'flex';
+                                            statusBanner.innerText = "You are Black";
+                                            statusBanner.classList.add('active');
+                
+                                game.load(snapshot.val().fen);
+                                setupGameSync();
+                                renderBoard();
+                            } catch (err) {
+                                console.error("Firebase error:", err);
+                                errorText.innerText = "Connection failed: " + err.message;
+                                errorText.style.display = 'block';
+                            }
+                        });
 
         // --- Game Sync ---
                 function setupGameSync() {
