@@ -181,7 +181,11 @@
 
     <!-- Background Intro Image & Music -->
             <img id="intro-video" src="intro.jpg" alt="Background" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; opacity: 0.8; filter: blur(3px); transform: translateZ(0); will-change: filter, transform;">
-            <audio id="bg-music" src="music.mp3" loop></audio>
+            <audio id="bg-music" loop>
+                <source src="music.mp3" type="audio/mpeg">
+                <source src="music.wave" type="audio/wav">
+                <source src="music.wav" type="audio/wav">
+            </audio>
             <script>
                 const bgMusic = document.getElementById('bg-music');
                 const introImg = document.getElementById('intro-video');
