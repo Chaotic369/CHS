@@ -224,9 +224,10 @@
         <div id="status-banner">Waiting for Match...</div>
         <div id="board"></div>
                 <div style="display: flex; gap: 15px; width: 100%; justify-content: center; max-width: var(--board-size); margin-top: 15px;">
-                                                                    <button id="btn-leave" class="btn" style="background: transparent; border: none; color: var(--danger); width: auto; height: auto; border-radius: 0;" onclick="leaveMatch()">Leave Match</button>
-                                                                                                                        <button id="btn-restart" class="btn btn-primary hidden" onclick="restartMatch()">Rematch</button>
-                                                                                                                    </div>
+                                                                                    <button id="btn-leave" class="btn" style="background: transparent; border: none; color: var(--danger); width: auto; height: auto; border-radius: 0;" onclick="leaveMatch()">Leave Match</button>
+                                                                                                                                        <button id="btn-undo" class="btn hidden" style="width: auto;" onclick="undoMove()" title="Undo last move">Undo</button>
+                                                                                                                                        <button id="btn-restart" class="btn btn-primary hidden" onclick="restartMatch()">Rematch</button>
+                                                                                                                                    </div>
                             </div>
 
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
@@ -345,14 +346,15 @@
                 };
 
         window.startOffline = () => {
-                                    if (!game) return alert("Game engine failed to load. Please check your internet connection.");
-                                    document.getElementById('menu-panel').classList.add('hidden');
-                                    document.getElementById('game-screen').style.display = 'flex';
-                    currentMode = 'offline';
-                    myColor = 'w';
-                    statusBanner.innerText = "Pass & Play (Offline)";
-                    renderBoard();
-                };
+                                            if (!game) return alert("Game engine failed to load. Please check your internet connection.");
+                                            document.getElementById('menu-panel').classList.add('hidden');
+                                            document.getElementById('game-screen').style.display = 'flex';
+                            currentMode = 'offline';
+                            myColor = 'w';
+                            statusBanner.innerText = "Pass & Play (Offline)";
+                            document.getElementById('btn-undo').classList.remove('hidden');
+                            renderBoard();
+                        };
 
                 window.leaveMatch = async () => {
                                                             if (!confirm("Are you sure you want to resign and leave the match?")) return;
@@ -369,17 +371,26 @@
                                                         };
 
                                                 window.restartMatch = () => {
-                                                                                                    if (currentMode !== 'offline' && roomId) {
-                                                                                                        // Let the database sync handle the reset and color swap for both players
-                                                                                                        const startFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
-                                                                                                        set(ref(db, 'games/' + roomId + '/fen'), startFen).catch(err => console.error(err));
-                                                                                                    } else {
-                                                                                                        game.reset();
-                                                                                                        selectedSquare = null;
-                                                                                                        possibleMoves = [];
-                                                                                                        myColor = myColor === 'w' ? 'b' : 'w';
-                                                                                                        renderBoard();
-                                                                                                    }
+                                                                                                                                                    if (currentMode !== 'offline' && roomId) {
+                                                                                                                                                        // Let the database sync handle the reset and color swap for both players
+                                                                                                                                                        const startFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+                                                                                                                                                        set(ref(db, 'games/' + roomId + '/fen'), startFen).catch(err => console.error(err));
+                                                                                                                                                    } else {
+                                                                                                                                                        game.reset();
+                                                                                                                                                        selectedSquare = null;
+                                                                                                                                                        possibleMoves = [];
+                                                                                                                                                        myColor = myColor === 'w' ? 'b' : 'w';
+                                                                                                                                                        renderBoard();
+                                                                                                                                                    }
+                                                                                                                                                };
+
+                                                                                                window.undoMove = () => {
+                                                                                                    if (currentMode !== 'offline') return;
+                                                                                                    if (game.history().length === 0) return;
+                                                                                                    game.undo();
+                                                                                                    selectedSquare = null;
+                                                                                                    possibleMoves = [];
+                                                                                                    renderBoard();
                                                                                                 };
 
                 // --- Join Logic ---
@@ -518,22 +529,32 @@
                                 else boardEl.style.transform = 'none';
 
                                 const restartBtn = document.getElementById('btn-restart');
-                                            const leaveBtn = document.getElementById('btn-leave');
-                                            if (game.game_over()) {
-                                                statusBanner.innerText = "Game Over!";
-                                                statusBanner.classList.remove('active');
-                                                if (restartBtn) restartBtn.classList.remove('hidden');
-                                                if (leaveBtn) leaveBtn.classList.add('hidden');
-                                            } else {
-                                                if (restartBtn) restartBtn.classList.add('hidden');
-                                                if (leaveBtn) leaveBtn.classList.remove('hidden');
-                                                // Restore status banner text if it was game over
-                                                if (statusBanner.innerText === "Game Over!") {
-                                                    statusBanner.innerText = currentMode === 'offline' ? "Pass & Play (Offline)" : `You are ${myColor === 'w' ? 'White' : 'Black'}`;
-                                                    statusBanner.classList.add('active');
-                                                }
-                                            }
-                            }
+                                                                            const leaveBtn = document.getElementById('btn-leave');
+                                                                            const undoBtn = document.getElementById('btn-undo');
+                                                                            if (game.game_over()) {
+                                                                                statusBanner.innerText = "Game Over!";
+                                                                                statusBanner.classList.remove('active');
+                                                                                if (restartBtn) restartBtn.classList.remove('hidden');
+                                                                                if (leaveBtn) leaveBtn.classList.add('hidden');
+                                                                                if (undoBtn) undoBtn.classList.add('hidden');
+                                                                            } else {
+                                                                                if (restartBtn) restartBtn.classList.add('hidden');
+                                                                                if (leaveBtn) leaveBtn.classList.remove('hidden');
+                                                                                if (undoBtn) {
+                                                                                    if (currentMode === 'offline') {
+                                                                                        undoBtn.classList.remove('hidden');
+                                                                                        undoBtn.disabled = game.history().length === 0;
+                                                                                    } else {
+                                                                                        undoBtn.classList.add('hidden');
+                                                                                    }
+                                                                                }
+                                                                                // Restore status banner text if it was game over
+                                                                                if (statusBanner.innerText === "Game Over!") {
+                                                                                    statusBanner.innerText = currentMode === 'offline' ? "Pass & Play (Offline)" : `You are ${myColor === 'w' ? 'White' : 'Black'}`;
+                                                                                    statusBanner.classList.add('active');
+                                                                                }
+                                                                            }
+                                                            }
 
         function handleSquareClick(sqId) {
                             if (game.game_over()) return;
