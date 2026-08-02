@@ -96,17 +96,11 @@
                             transform: scale(0.98);
                         }
                         .btn-danger:active {
-                            box-shadow: none;
-                            background: rgba(255, 255, 255, 0.05);
-                        }
-            .btn-primary { color: var(--accent); }
-            .btn-danger { color: var(--danger); }
-            .btn:active { 
-                box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); 
-                transform: scale(0.98);
-            }
+                                                    box-shadow: none;
+                                                    background: rgba(255, 255, 255, 0.05);
+                                                }
 
-            input {
+                                    input {
                 width: 100%;
                 padding: 12px;
                 box-sizing: border-box;
@@ -212,34 +206,19 @@
     </script>
 
     <script type="module">
-            // Firebase Setup - Loaded dynamically so the app won't crash if blocked by adblockers or offline
-            let db = null;
-            let ref, onValue, set, get, onDisconnect;
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+            import { getDatabase, ref, onValue, set, get, onDisconnect } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
-            (async () => {
-                try {
-                    const appPkg = await import("https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js");
-                    const dbPkg = await import("https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js");
-                
-                    const firebaseConfig = {
-                        apiKey: "AIzaSyBhg8EM5pSFqtqPCtCnzcySYC6DMoRBevE",
-                        databaseURL: "https://chess-361a1-default-rtdb.firebaseio.com"
-                    };
-                    const app = appPkg.initializeApp(firebaseConfig);
-                    db = dbPkg.getDatabase(app);
-                
-                    ref = dbPkg.ref;
-                    onValue = dbPkg.onValue;
-                    set = dbPkg.set;
-                    get = dbPkg.get;
-                    onDisconnect = dbPkg.onDisconnect;
-                } catch (err) {
-                    console.warn("Firebase blocked or offline. Multiplayer disabled.", err);
-                }
-            })();
+            // Firebase Setup
+            const firebaseConfig = {
+                apiKey: "AIzaSyBhg8EM5pSFqtqPCtCnzcySYC6DMoRBevE",
+                databaseURL: "https://chess-361a1-default-rtdb.firebaseio.com"
+            };
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
 
             // State
-                    const game = typeof Chess !== 'undefined' ? new Chess() : null;
+            const game = new Chess();
                 const sounds = {
                     move: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-self.mp3'),
                     capture: new Audio('https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/capture.mp3'),
