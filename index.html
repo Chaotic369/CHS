@@ -12,8 +12,8 @@
                 --text-main: #d1d5db;
             
                 /* Board Colors */
-                --light-sq: #ebecd0;
-                --dark-sq: #739552;
+                                --light-sq: #f0d9b5;
+                                --dark-sq: #b58863;
                 --highlight: rgba(0, 0, 0, 0.4);
                 --selected: rgba(129, 182, 76, 0.4);
             
@@ -151,8 +151,8 @@
                                     }
 
                         .square { display: flex; align-items: center; justify-content: center; position: relative; }
-                        .light { background-color: var(--light-sq); }
-                        .dark { background-color: var(--dark-sq); }
+                        .light { background-color: var(--light-sq); background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(139, 69, 19, 0.05) 2px, rgba(139, 69, 19, 0.05) 4px); }
+                                                .dark { background-color: var(--dark-sq); background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.08) 2px, rgba(0, 0, 0, 0.08) 4px); }
                         .piece { width: 85%; height: 85%; pointer-events: none; filter: drop-shadow(3px 4px 4px rgba(0,0,0,0.4)); will-change: transform; transform: translateZ(0); backface-visibility: hidden; }
                         .rotate-piece { transform: rotate(180deg) translateZ(0); }
             .selected { background-color: var(--selected) !important; box-shadow: inset 2px 2px 8px rgba(0,0,0,0.3) !important; }
