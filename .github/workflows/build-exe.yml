@@ -1,8 +1,5 @@
-# Config v3 - Universal EXE Builder
 name: Build Windows EXE
-on:
-  workflow_dispatch:
-
+on: [workflow_dispatch]
 jobs:
   build:
     runs-on: windows-latest
@@ -12,7 +9,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
       - name: Build App
         shell: bash
         run: |
@@ -21,42 +18,26 @@ jobs:
           cd build_app
           npm init -y
           npm install electron electron-builder --save-dev
-          
-          # Dynamically find the main HTML file
           if [ -f "index.html" ]; then
             MAIN_FILE="index.html"
           else
             MAIN_FILE=$(find . -maxdepth 1 -name "*.html" | head -n 1 | sed 's|^\./||')
           fi
           if [ -z "$MAIN_FILE" ]; then MAIN_FILE="index.html"; fi
-          
-          # Dynamically get Repo Name for App details
-          REPO_NAME="${{ github.event.repository.name }}"
-          APP_NAME=${REPO_NAME:-App}
-          
           cat << EOF > main.js
           const { app, BrowserWindow } = require('electron');
           const path = require('path');
           app.whenReady().then(() => {
-            let win = new BrowserWindow({
-              autoHideMenuBar: true,
-              width: 1280,
-              height: 720,
-              webPreferences: {
-                nodeIntegration: true,
-                contextIsolation: false,
-                webSecurity: false
-              }
-            });
+            let win = new BrowserWindow({ autoHideMenuBar: true, width: 1280, height: 720, webPreferences: { nodeIntegration: true, contextIsolation: false, webSecurity: false } });
             win.loadFile(path.join(__dirname, '$MAIN_FILE')).catch(() => console.log('No HTML file found'));
           });
           app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
           EOF
-          
           npm pkg set main="main.js"
           npm pkg set scripts.build="electron-builder --win portable --x64"
-          npm pkg set build.appId="com.aicompile.$APP_NAME"
-          npm pkg set build.productName="$APP_NAME"
+          npm pkg set build.appId="com.aicompile.Chess"
+          npm pkg set build.productName="Chess"
+          npm pkg set version="1.0.0"
           npm run build
       - name: Upload EXE
         uses: actions/upload-artifact@v4
