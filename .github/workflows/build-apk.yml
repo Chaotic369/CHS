@@ -23,7 +23,7 @@ jobs:
           export CORDOVA_NO_TELEMETRY=1
           export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=https\://services.gradle.org/distributions/gradle-8.13-all.zip
           cd /tmp
-          cordova create app com.aicompile.chess34415 "Chess" --no-telemetry
+          cordova create app com.aicompile.chess31796 "Chess" --no-telemetry
           rm -rf app/www/*
           cp -R $GITHUB_WORKSPACE/* app/www/ || true
           cd app
